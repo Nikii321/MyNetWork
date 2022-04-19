@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 
 @Controller
 public class ImageController {
@@ -27,7 +26,7 @@ public class ImageController {
 
 
     @PostMapping("/fileUpload")
-    public String upload(@ModelAttribute("File") @Valid MultipartFile file, Model model){
+    public String upload(@ModelAttribute("File") MultipartFile file, Model model){
         String localPath="/Users/nikolajvereschagin/Desktop/RusFaceApp/src/main/webapp/resources/image";
 
         String warning="";

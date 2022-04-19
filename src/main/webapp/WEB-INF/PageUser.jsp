@@ -61,6 +61,8 @@
 
         <botton><a href="/change"> Change</a></botton>
         <a href="/">Main</a>
+    <botton><a href="/post">AddPost</a></botton>
+
         <p/>
 
         <a href="/fileUpload">Upload Image </a>

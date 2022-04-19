@@ -2,6 +2,9 @@ package com.example.postapi.config;
 
 
 import com.example.postapi.handlers.PostHandlers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -10,8 +13,11 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+
 @Configuration
 public class PostRouter {
+
+
     @Bean
     public RouterFunction<ServerResponse> routerFunctionGetShowALL(PostHandlers postHandlers){
         return RouterFunctions

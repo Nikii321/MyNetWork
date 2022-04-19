@@ -1,6 +1,5 @@
 package com.example.MyNetWork.service;
 
-import com.example.MyNetWork.Repository.DetailsRepo;
 import com.example.MyNetWork.Repository.RoleRepo;
 import com.example.MyNetWork.Repository.UserRepo;
 import com.example.MyNetWork.entity.Role;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +34,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ImageService imageService;
 
+    @Autowired
+    MessageSender kafkaMessageSender;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userName = userRepository.findByUsername(username);
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
         Role  role =new Role(1L, "ROLE_USER");
         Set<Role> set = new HashSet<>();
         set.add(role);
+        User user = getCurrentUser();
         return userRepository.findAllByRoles(set);
     }
     public List<User> allBanForAdmin() {

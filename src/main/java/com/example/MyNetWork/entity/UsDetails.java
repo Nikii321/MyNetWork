@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -24,10 +23,8 @@ public class UsDetails {
     @Column
     private String birthday;
 
-    @Size(min = 2)
     @Column
     private String work = null;
-    @Size(min = 2)
     @Column
     private String university = null;
 
@@ -35,15 +32,12 @@ public class UsDetails {
     @Column
     private String phone = null;
 
-    @Size(min = 2)
     @Column
     private String city = null;
 
-    @Size(min = 2)
     @Column
     private String nameUser;
 
-    @Size(min = 2)
     @Column
     private String surnameUser;
 

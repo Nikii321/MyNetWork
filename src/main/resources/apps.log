@@ -1,0 +1,366 @@
+"2022-04-19 19:59:26 [main] INFO  com.example.MyNetWork.Application - Starting Application on MacBook-Pro-Nikolaj.local with PID 89791 (/Users/nikolajvereschagin/Desktop/MyNetWork/target/classes started by nikolajvereschagin in /Users/nikolajvereschagin/Desktop/MyNetWork)
+""2022-04-19 19:59:26 [main] INFO  com.example.MyNetWork.Application - No active profile set, falling back to default profiles: default
+""2022-04-19 19:59:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+""2022-04-19 19:59:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+""2022-04-19 19:59:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 82ms. Found 3 repository interfaces.
+""2022-04-19 19:59:27 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.kafka.annotation.KafkaBootstrapConfiguration' of type [org.springframework.kafka.annotation.KafkaBootstrapConfiguration$$EnhancerBySpringCGLIB$$de635a2c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+""2022-04-19 19:59:27 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$ab148a9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+""2022-04-19 19:59:28 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)
+""2022-04-19 19:59:28 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+""2022-04-19 19:59:28 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.26]
+""2022-04-19 19:59:28 [main] INFO  org.apache.jasper.servlet.TldScanner - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+""2022-04-19 19:59:28 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+""2022-04-19 19:59:28 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+""2022-04-19 19:59:29 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+""2022-04-19 19:59:29 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+""2022-04-19 19:59:29 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.12.Final}
+""2022-04-19 19:59:29 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+""2022-04-19 19:59:29 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+""2022-04-19 19:59:29 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+""2022-04-19 19:59:29 [main] INFO  o.h.e.j.e.i.LobCreatorBuilderImpl - HHH000421: Disabling contextual LOB creation as hibernate.jdbc.lob.non_contextual_creation is true
+""2022-04-19 19:59:29 [main] INFO  org.hibernate.type.BasicTypeRegistry - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@54b44879
+""2022-04-19 19:59:29 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+""2022-04-19 19:59:31 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@600e2000, org.springframework.security.web.context.SecurityContextPersistenceFilter@40fd1a78, org.springframework.security.web.header.HeaderWriterFilter@277474fc, org.springframework.security.web.authentication.logout.LogoutFilter@1cf4d454, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@552b15f6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@24536f07, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6f926d01, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@797ee1a9, org.springframework.security.web.session.SessionManagementFilter@33425171, org.springframework.security.web.access.ExceptionTranslationFilter@c3ca482, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6a95c2f6]
+""2022-04-19 19:59:31 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+""2022-04-19 19:59:31 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+""2022-04-19 19:59:31 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+""2022-04-19 19:59:32 [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
+""2022-04-19 19:59:32 [main] INFO  o.a.k.c.admin.AdminClientConfig - AdminClientConfig values: 
+	bootstrap.servers = [localhost:9092]
+	client.id = 
+	connections.max.idle.ms = 300000
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 120000
+	retries = 5
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+""2022-04-19 19:59:32 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version : 2.0.1
+""2022-04-19 19:59:32 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId : fa14705e51bd2ce5
+""2022-04-19 19:59:32 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8081 (http) with context path ''
+""2022-04-19 19:59:32 [main] INFO  com.example.MyNetWork.Application - Started Application in 6.813 seconds (JVM running for 7.551)
+""2022-04-19 20:00:36 [Thread-3] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+""2022-04-19 20:00:36 [Thread-3] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+""2022-04-19 20:00:36 [Thread-3] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+""2022-04-19 20:00:36 [Thread-3] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+""2022-04-19 20:00:36 [Thread-3] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+""2022-04-19 20:00:43 [main] INFO  com.example.MyNetWork.Application - Starting Application on MacBook-Pro-Nikolaj.local with PID 89862 (/Users/nikolajvereschagin/Desktop/MyNetWork/target/classes started by nikolajvereschagin in /Users/nikolajvereschagin/Desktop/MyNetWork)
+""2022-04-19 20:00:43 [main] INFO  com.example.MyNetWork.Application - No active profile set, falling back to default profiles: default
+""2022-04-19 20:00:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+""2022-04-19 20:00:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+""2022-04-19 20:00:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 72ms. Found 3 repository interfaces.
+""2022-04-19 20:00:44 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.kafka.annotation.KafkaBootstrapConfiguration' of type [org.springframework.kafka.annotation.KafkaBootstrapConfiguration$$EnhancerBySpringCGLIB$$b90c3289] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+""2022-04-19 20:00:44 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$e55a2106] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+""2022-04-19 20:00:45 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)
+""2022-04-19 20:00:45 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+""2022-04-19 20:00:45 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.26]
+""2022-04-19 20:00:45 [main] INFO  org.apache.jasper.servlet.TldScanner - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+""2022-04-19 20:00:45 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+""2022-04-19 20:00:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+""2022-04-19 20:00:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+""2022-04-19 20:00:45 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+""2022-04-19 20:00:45 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.12.Final}
+""2022-04-19 20:00:45 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+""2022-04-19 20:00:46 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+""2022-04-19 20:00:46 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+""2022-04-19 20:00:46 [main] INFO  o.h.e.j.e.i.LobCreatorBuilderImpl - HHH000421: Disabling contextual LOB creation as hibernate.jdbc.lob.non_contextual_creation is true
+""2022-04-19 20:00:46 [main] INFO  org.hibernate.type.BasicTypeRegistry - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@602298b
+""2022-04-19 20:00:46 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+""2022-04-19 20:00:47 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c8d631, org.springframework.security.web.context.SecurityContextPersistenceFilter@6c537267, org.springframework.security.web.header.HeaderWriterFilter@3472f3ab, org.springframework.security.web.authentication.logout.LogoutFilter@40fd1a78, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@70f8d217, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@22e1a1dc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@74d776fb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3d42b756, org.springframework.security.web.session.SessionManagementFilter@1f2497d9, org.springframework.security.web.access.ExceptionTranslationFilter@6d658aa8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@68e094c9]
+""2022-04-19 20:00:48 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+""2022-04-19 20:00:48 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+""2022-04-19 20:00:48 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+""2022-04-19 20:00:48 [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
+""2022-04-19 20:00:49 [main] INFO  o.a.k.c.admin.AdminClientConfig - AdminClientConfig values: 
+	bootstrap.servers = [localhost:9092]
+	client.id = 
+	connections.max.idle.ms = 300000
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 120000
+	retries = 5
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+""2022-04-19 20:00:49 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version : 2.0.1
+""2022-04-19 20:00:49 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId : fa14705e51bd2ce5
+""2022-04-19 20:00:49 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8081 (http) with context path ''
+""2022-04-19 20:00:49 [main] INFO  com.example.MyNetWork.Application - Started Application in 6.378 seconds (JVM running for 7.012)
+""2022-04-19 20:00:57 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+""2022-04-19 20:01:05 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:05 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = UserDetails com.example.MyNetWork.service.UserServiceImpl.loadUserByUsername(String), 
+ Method = public org.springframework.security.core.userdetails.UserDetails com.example.MyNetWork.service.UserServiceImpl.loadUserByUsername(java.lang.String) throws org.springframework.security.core.userdetails.UsernameNotFoundException,
+ Parameters = [nikolay]
+""2022-04-19 20:01:05 [http-nio-8081-exec-5] INFO  o.h.h.i.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+""2022-04-19 20:01:05 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = User{id=53, username='nikolay', password='$2a$10$PH2.iygwkHslkp77gCL5pee.yda3E6ehdEF1TO3cwkBykxsGdwvse', passwordConfirm='null', roles=[com.example.MyNetWork.entity.Role@7b59bb53, com.example.MyNetWork.entity.Role@326438cf], activationCode='null', email='nikolayvereshshagin@gmail.com', isActive=true, usDetails=UsDetails{id=19, birthday='31.10.2003', work='Yandex', university='ITMO University', phone='79944396867', city='St Peterburg', nameUser='Nikolay', surnameUser='Verechshagin'}}
+""2022-04-19 20:01:05 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:05 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:05 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.controller.postController.showPost(Model), 
+ Method = public java.lang.String com.example.MyNetWork.controller.postController.showPost(org.springframework.ui.Model),
+ Parameters = [{}]
+""2022-04-19 20:01:05 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = post
+""2022-04-19 20:01:05 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.controller.PageController.showPage(String,Model), 
+ Method = public java.lang.String com.example.MyNetWork.controller.PageController.showPage(java.lang.String,org.springframework.ui.Model),
+ Parameters = [nikolay, {}]
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = User com.example.MyNetWork.service.UserServiceImpl.findUserByUsername(String), 
+ Method = public com.example.MyNetWork.entity.User com.example.MyNetWork.service.UserServiceImpl.findUserByUsername(java.lang.String),
+ Parameters = [nikolay]
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = User{id=53, username='nikolay', password='$2a$10$PH2.iygwkHslkp77gCL5pee.yda3E6ehdEF1TO3cwkBykxsGdwvse', passwordConfirm='null', roles=[com.example.MyNetWork.entity.Role@36c12de1, com.example.MyNetWork.entity.Role@155bf37a], activationCode='null', email='nikolayvereshshagin@gmail.com', isActive=true, usDetails=UsDetails{id=19, birthday='31.10.2003', work='Yandex', university='ITMO University', phone='79944396867', city='St Peterburg', nameUser='Nikolay', surnameUser='Verechshagin'}}
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(), 
+ Method = public java.lang.String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(),
+ Parameters = []
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = nikolay
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(), 
+ Method = public java.lang.String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(),
+ Parameters = []
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = nikolay
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = boolean com.example.MyNetWork.service.UserServiceImpl.isSubscribe(String,String), 
+ Method = public boolean com.example.MyNetWork.service.UserServiceImpl.isSubscribe(java.lang.String,java.lang.String),
+ Parameters = [nikolay, nikolay]
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = false
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = PageUser
+""2022-04-19 20:01:09 [http-nio-8081-exec-6] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.controller.PageController.showPage(String,Model), 
+ Method = public java.lang.String com.example.MyNetWork.controller.PageController.showPage(java.lang.String,org.springframework.ui.Model),
+ Parameters = [nikolay, {}]
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = User com.example.MyNetWork.service.UserServiceImpl.findUserByUsername(String), 
+ Method = public com.example.MyNetWork.entity.User com.example.MyNetWork.service.UserServiceImpl.findUserByUsername(java.lang.String),
+ Parameters = [nikolay]
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = User{id=53, username='nikolay', password='$2a$10$PH2.iygwkHslkp77gCL5pee.yda3E6ehdEF1TO3cwkBykxsGdwvse', passwordConfirm='null', roles=[com.example.MyNetWork.entity.Role@68da83e2, com.example.MyNetWork.entity.Role@627703ee], activationCode='null', email='nikolayvereshshagin@gmail.com', isActive=true, usDetails=UsDetails{id=19, birthday='31.10.2003', work='Yandex', university='ITMO University', phone='79944396867', city='St Peterburg', nameUser='Nikolay', surnameUser='Verechshagin'}}
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(), 
+ Method = public java.lang.String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(),
+ Parameters = []
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = nikolay
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(), 
+ Method = public java.lang.String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(),
+ Parameters = []
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = nikolay
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = boolean com.example.MyNetWork.service.UserServiceImpl.isSubscribe(String,String), 
+ Method = public boolean com.example.MyNetWork.service.UserServiceImpl.isSubscribe(java.lang.String,java.lang.String),
+ Parameters = [nikolay, nikolay]
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = false
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = PageUser
+""2022-04-19 20:01:12 [http-nio-8081-exec-2] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:13 [http-nio-8081-exec-1] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:13 [http-nio-8081-exec-1] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.controller.postController.showPost(Model), 
+ Method = public java.lang.String com.example.MyNetWork.controller.postController.showPost(org.springframework.ui.Model),
+ Parameters = [{}]
+""2022-04-19 20:01:13 [http-nio-8081-exec-1] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = post
+""2022-04-19 20:01:13 [http-nio-8081-exec-1] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.controller.postController.changeUser(Post), 
+ Method = public java.lang.String com.example.MyNetWork.controller.postController.changeUser(com.example.postapi.model.Post),
+ Parameters = [Post{id=null, text='suck my dick friends', path='null', authorName='null', authorId=null}]
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = User com.example.MyNetWork.service.UserServiceImpl.getCurrentUser(), 
+ Method = public com.example.MyNetWork.entity.User com.example.MyNetWork.service.UserServiceImpl.getCurrentUser(),
+ Parameters = []
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = User{id=53, username='nikolay', password='$2a$10$PH2.iygwkHslkp77gCL5pee.yda3E6ehdEF1TO3cwkBykxsGdwvse', passwordConfirm='null', roles=[com.example.MyNetWork.entity.Role@b68ac5, com.example.MyNetWork.entity.Role@530f9e21], activationCode='null', email='nikolayvereshshagin@gmail.com', isActive=true, usDetails=UsDetails{id=19, birthday='31.10.2003', work='Yandex', university='ITMO University', phone='79944396867', city='St Peterburg', nameUser='Nikolay', surnameUser='Verechshagin'}}
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = void com.example.MyNetWork.service.KafkaMessageSender.send(Post), 
+ Method = public void com.example.MyNetWork.service.KafkaMessageSender.send(com.example.postapi.model.Post),
+ Parameters = [Post{id=null, text='suck my dick friends', path='null', authorName='nikolay', authorId=53}]
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.M.service.KafkaMessageSender - send message:Post{id=null, text='suck my dick friends', path='null', authorName='nikolay', authorId=53}
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  o.a.k.c.producer.ProducerConfig - ProducerConfig values: 
+	acks = 1
+	batch.size = 4096
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 40960
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version : 2.0.1
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId : fa14705e51bd2ce5
+""2022-04-19 20:01:22 [kafka-producer-network-thread | producer-1] INFO  org.apache.kafka.clients.Metadata - Cluster ID: 66IH9emeRC24XSJlFtYMxQ
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = null
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = redirect:/page/nikolay
+""2022-04-19 20:01:22 [http-nio-8081-exec-5] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.controller.PageController.showPage(String,Model), 
+ Method = public java.lang.String com.example.MyNetWork.controller.PageController.showPage(java.lang.String,org.springframework.ui.Model),
+ Parameters = [nikolay, {}]
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = User com.example.MyNetWork.service.UserServiceImpl.findUserByUsername(String), 
+ Method = public com.example.MyNetWork.entity.User com.example.MyNetWork.service.UserServiceImpl.findUserByUsername(java.lang.String),
+ Parameters = [nikolay]
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = User{id=53, username='nikolay', password='$2a$10$PH2.iygwkHslkp77gCL5pee.yda3E6ehdEF1TO3cwkBykxsGdwvse', passwordConfirm='null', roles=[com.example.MyNetWork.entity.Role@750d992, com.example.MyNetWork.entity.Role@69ef74ad], activationCode='null', email='nikolayvereshshagin@gmail.com', isActive=true, usDetails=UsDetails{id=19, birthday='31.10.2003', work='Yandex', university='ITMO University', phone='79944396867', city='St Peterburg', nameUser='Nikolay', surnameUser='Verechshagin'}}
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(), 
+ Method = public java.lang.String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(),
+ Parameters = []
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = nikolay
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(), 
+ Method = public java.lang.String com.example.MyNetWork.service.UserServiceImpl.getCurrentUsername(),
+ Parameters = []
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = nikolay
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Started
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Class = boolean com.example.MyNetWork.service.UserServiceImpl.isSubscribe(String,String), 
+ Method = public boolean com.example.MyNetWork.service.UserServiceImpl.isSubscribe(java.lang.String,java.lang.String),
+ Parameters = [nikolay, nikolay]
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = false
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - result = PageUser
+""2022-04-19 20:01:22 [http-nio-8081-exec-8] INFO  c.e.MyNetWork.AOP.LoggingAspect - Finished
+""2022-04-19 20:01:35 [Thread-3] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+""2022-04-19 20:01:35 [Thread-3] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+""2022-04-19 20:01:35 [Thread-3] INFO  o.a.k.clients.producer.KafkaProducer - [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+""2022-04-19 20:01:35 [Thread-3] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+""2022-04-19 20:01:35 [Thread-3] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+""2022-04-19 20:01:35 [Thread-3] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+"

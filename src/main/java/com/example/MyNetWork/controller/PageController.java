@@ -9,12 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @Controller
 public class PageController {
     @Autowired
     UserService userService;
+
 
     @GetMapping("/page/{username}")
     public String showPage(@PathVariable("username") String username, Model model){

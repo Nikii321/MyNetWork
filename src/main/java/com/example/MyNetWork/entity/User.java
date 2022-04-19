@@ -7,8 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -21,10 +20,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Size(min=2, message = "Не меньше 5 знаков")
     @Column(name = "username")
     private String username;
-    @Size(min=2, message = "Не меньше 5 знаков")
     @Column(name = "password")
     private String password;
     @Transient
@@ -43,7 +40,6 @@ public class User implements UserDetails {
         this.activationCode = activationCode;
     }
 
-    @Email
     @Column
     private String email;
 
