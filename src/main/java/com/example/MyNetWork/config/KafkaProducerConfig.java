@@ -14,7 +14,9 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    public static final String TOPIC_RATE_REQUESTS = "RATE_REQUESTS";
+    public static final String TOPIC_RATE_REQUESTS = "ADD_POST_REQUESTS";
+    public static final String TOPIC_RATE_REQUESTS_NEWS = "NEWS_SHOW_REQUESTS";
+
 
     private String bootstrapAddress = "localhost:9092";
 
@@ -28,6 +30,9 @@ public class KafkaProducerConfig {
     @Bean
     public NewTopic topic1() {
         return new NewTopic("baeldung", 1, (short) 1);
+    }
+    @Bean
+    public NewTopic topicNews() { return new NewTopic("baeldung", 2, (short) 1);
     }
 
 }

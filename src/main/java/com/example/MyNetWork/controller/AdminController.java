@@ -18,6 +18,7 @@ public class AdminController {
     public String userList( Model model) {
         model.addAttribute("allUsers", userService.allUsersForAdmin());
         model.addAttribute("allBaned",userService.allBanForAdmin());
+
         return "admin";
     }
 

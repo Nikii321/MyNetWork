@@ -2,10 +2,14 @@ package com.example.MyNetWork.service;
 
 import com.example.MyNetWork.Repository.RoleRepo;
 import com.example.MyNetWork.Repository.UserRepo;
+import com.example.MyNetWork.config.KafkaConsumerConfig;
 import com.example.MyNetWork.entity.Role;
 import com.example.MyNetWork.entity.UsDetails;
 import com.example.MyNetWork.entity.User;
+import com.example.postapi.model.Post;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +20,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +41,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ImageService imageService;
 
+    private HashMap<Long, List<Post>> listHashMap= new HashMap<>();
+
+    public HashMap<Long, List<Post>> getListHashMap() {
+        return listHashMap;
+    }
+
+    public void addListHashMap( Long id, List<Post> list) {
+
+        listHashMap.put(id,list);
+    }
     @Autowired
     MessageSender kafkaMessageSender;
 
@@ -186,6 +203,39 @@ public class UserServiceImpl implements UserService {
             subscription(userSubscriber, userAuthor);
             subscribe(userAuthor, userSubscriber);
         }
+    }
+
+    @Override
+    public void sendKafkaListId() {
+        User user = getCurrentUser();
+        Set<Long> idList = getListIdUser(user);
+        kafkaMessageSender.send(idList, user.getId());
+
+    }
+    public List<Post> getNews() throws InterruptedException {
+        User user = getCurrentUser();
+        List<Post> posts = listHashMap.get(user.getId());
+        int i=0;
+        var data = System.currentTimeMillis();
+        while (posts == null){
+
+           posts = listHashMap.get(user.getId());
+           if(System.currentTimeMillis()-data>=5000){
+               break;
+           }
+        }
+
+
+        return posts;
+    }
+
+
+    private Set<Long> getListIdUser(User user){
+        Set<Long> res = new HashSet<>();
+        for(User tmp:user.getSubscriptions()){
+            res.add(tmp.getId());
+        }
+        return res;
     }
 
     public void subscription(User userSubscriber, User userAuthor){

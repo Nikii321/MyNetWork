@@ -29,10 +29,12 @@ public class PostServiceImpl implements PostService{
         return postRepo.findAllByAuthorId(id);
     }
     public Mono<Post> save(Mono<Post> newPost){
+
         return newPost.flatMap(s ->{
             s.setDate(Instant.ofEpochMilli(System.currentTimeMillis()));
             return postRepo.save(s);
         });
+
     }
     public Mono<Post> update(Mono<Post> newPost,Long id){
 
@@ -49,7 +51,9 @@ public class PostServiceImpl implements PostService{
         return mono;
     }
     public Flux<Post> showUserNews(Flux<Long> authorId){
-         return authorId.flatMap(this::showByAuthorId);
+
+        return authorId.flatMap(this::showByAuthorId);
     }
+
 
 }

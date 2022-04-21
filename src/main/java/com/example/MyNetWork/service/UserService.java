@@ -1,11 +1,13 @@
 package com.example.MyNetWork.service;
 import com.example.MyNetWork.entity.UsDetails;
 import com.example.MyNetWork.entity.User;
+import com.example.postapi.model.Post;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public interface UserService extends UserDetailsService {
@@ -26,4 +28,8 @@ public interface UserService extends UserDetailsService {
     public User getCurrentUser();
     public boolean isSubscribe(User userSubscriber, User userAuthor);
     public void subscriptionOrUnsubscription(String usernameSubscriber, String user);
+    public void sendKafkaListId();
+    public List<Post> getNews() throws ExecutionException, InterruptedException;
+
+    void addListHashMap(Long id, List<Post> list);
 }
