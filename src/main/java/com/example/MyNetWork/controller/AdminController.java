@@ -1,5 +1,6 @@
 package com.example.MyNetWork.controller;
 
+import com.example.MyNetWork.service.AdminService;
 import com.example.MyNetWork.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AdminController {
     @Autowired
-    private UserService userService;
+    private AdminService adminService;
 
     @GetMapping("/admin")
     public String userList( Model model) {
-        model.addAttribute("allUsers", userService.allUsersForAdmin());
-        model.addAttribute("allBaned",userService.allBanForAdmin());
+        model.addAttribute("allUsers", adminService.allUsersForAdmin());
+        model.addAttribute("allBaned",adminService.allBanForAdmin());
 
         return "admin";
     }
@@ -27,17 +28,17 @@ public class AdminController {
                               @RequestParam(required = true, defaultValue = "" ) String action,
                               Model model) {
         if (action.equals("delete")){
-            userService.banUser(userId);
+            adminService.banUser(userId);
         }
         if (action.equals("Unban")){
-            userService.unbanUser(userId);
+            adminService.unbanUser(userId);
         }
         return "redirect:/admin";
     }
 
     @GetMapping("/admin/gt/{userId}")
     public String  gtUser(@PathVariable("userId") Long userId, Model model) {
-        model.addAttribute("allUsers", userService.usergtList(userId));
+        model.addAttribute("allUsers", adminService.usergtList(userId));
         return "admin";
     }
 }

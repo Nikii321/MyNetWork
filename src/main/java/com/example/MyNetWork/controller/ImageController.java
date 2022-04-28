@@ -1,7 +1,5 @@
 package com.example.MyNetWork.controller;
 
-import com.example.MyNetWork.entity.UsDetails;
-import com.example.MyNetWork.entity.User;
 import com.example.MyNetWork.service.ImageService;
 import com.example.MyNetWork.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ public class ImageController {
 
     @GetMapping("/fileUpload")
     public String showUploaderImage(){
+        System.out.println("start");
         return "fileLouder";
     }
 
@@ -27,7 +26,7 @@ public class ImageController {
 
     @PostMapping("/fileUpload")
     public String upload(@ModelAttribute("File") MultipartFile file, Model model){
-        String localPath="/Users/nikolajvereschagin/Desktop/RusFaceApp/src/main/webapp/resources/image";
+        String localPath="/Users/nikolajvereschagin/Desktop/MyNetWork/src/main/webapp/resources/image";
 
         String warning="";
         if(imageService.upload(file, localPath, userService.getCurrentUsername())){
@@ -38,7 +37,7 @@ public class ImageController {
         }
         model.addAttribute("Name",userService.getCurrentUsername());
 
-        System.out.println(warning);
+
         return "fileLouder";
     }
 

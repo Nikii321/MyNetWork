@@ -6,6 +6,12 @@
 <head>
     <meta charset="utf-8">
     <title>News</title>
+    <style>
+        body{
+            background-image: url("${pageContext.request.contextPath}/resources/image/defoult.jpg");
+            color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
 <div>
@@ -19,7 +25,7 @@
         <p/><p/>
     </c:forEach>
 
-    <a href="/">Main</a>
+    <a href="/" style="color: #448AFF">Main</a>
 </div>
 </body>
 </html>

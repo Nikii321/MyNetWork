@@ -2,17 +2,56 @@ package com.example.MyNetWork.service;
 
 import com.example.MyNetWork.Repository.DetailsRepo;
 import com.example.MyNetWork.entity.UsDetails;
+import com.example.MyNetWork.entity.User;
+import com.example.detailsapi.model.Details;
+import com.example.postapi.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class DetailsServiceImpl implements DetailsService{
+
     @Autowired
-    private DetailsRepo detailsRepo;
-    public UsDetails findById(Long id){
-        return  detailsRepo.findById(id).orElse(null);
+    UserService userService;
+
+    @Autowired
+    MessageSender kafkaMessageSender;
+
+    private  HashMap<Long, Details> detailsHashMap= new HashMap<>();
+
+    public HashMap<Long, Details> getDetailsHashMap() {
+        return detailsHashMap;
     }
-    public void save(UsDetails usDetails){
-        detailsRepo.save(usDetails);
+
+    public void addHashMap( Long id, Details details) {
+
+        detailsHashMap.put(id,details);
+    }
+
+    public Details getDetails(Long id) throws InterruptedException {
+
+        Details details = detailsHashMap.get(id);
+
+        int i=0;
+        var data = System.currentTimeMillis();
+        Thread.sleep(300);
+        while (details == null){
+
+            details = detailsHashMap.get(id);
+            if(System.currentTimeMillis()-data>=5000){
+                break;
+            }
+        }
+        return details;
+    }
+
+    public void sendKafkaListId() {
+        User user = userService.getCurrentUser();
+        kafkaMessageSender.send(user.getId());
+
     }
 }

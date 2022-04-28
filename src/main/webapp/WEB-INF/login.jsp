@@ -9,7 +9,7 @@
   <title>Log in with your account</title>
   <style>
     body{
-      background-image: url("${pageContext.request.contextPath}/resources/image/main.jpg");
+      background-image: url("${pageContext.request.contextPath}/resources/image/defoult.jpg");
     }
   </style>
 </head>

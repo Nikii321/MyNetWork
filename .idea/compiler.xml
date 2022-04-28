@@ -7,20 +7,27 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="DetailsApi" />
         <module name="MyNetWork" />
         <module name="PostApi" />
+        <module name="UsDetailsApi" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="demo" target="11" />
-      <module name="UserApi" target="11" />
+      <module name="UsDetailsApi" target="11" />
+      <module name="UserApi" target="17" />
+      <module name="UserDetailsApi" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="DetailsApi" options="-parameters" />
       <module name="MyNetWork" options="-parameters" />
       <module name="PostApi" options="-parameters" />
+      <module name="UsDetailsApi" options="-parameters" />
       <module name="UserApi" options="-parameters" />
+      <module name="UserDetailsApi" options="-parameters" />
       <module name="demo" options="-parameters" />
     </option>
   </component>

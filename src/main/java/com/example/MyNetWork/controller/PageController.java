@@ -1,27 +1,36 @@
 package com.example.MyNetWork.controller;
 
-import com.example.MyNetWork.entity.UsDetails;
-import com.example.MyNetWork.entity.User;
+import com.example.MyNetWork.service.DetailsService;
+import com.example.MyNetWork.service.MessageSender;
 import com.example.MyNetWork.service.UserService;
+import com.example.detailsapi.model.Details;
+import com.example.postapi.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
 public class PageController {
     @Autowired
     UserService userService;
+    @Autowired
+    DetailsService detailsService;
+    @Autowired
+    MessageSender kafkaMessageSender;
 
 
     @GetMapping("/page/{username}")
-    public String showPage(@PathVariable("username") String username, Model model){
-
-        model.addAttribute("UserDetails", userService.findUserByUsername(username).getUsDetails());
-        model.addAttribute("I",(userService.getCurrentUsername()));
-        model.addAttribute("SubscribeButton", userService.isSubscribe(userService.getCurrentUsername(),username));
+    public String showPage(@PathVariable("username") String username, Model model) throws InterruptedException {
+        kafkaMessageSender.send(userService.findUserByUsername(username).getId());
+        Details details= detailsService.getDetails(userService.findUserByUsername(username).getId());
+        model.addAttribute("UserDetails", details);
+        System.out.println(details);
+        model.addAttribute("I", userService.getCurrentUsername());
+        model.addAttribute("SubscribeButton", userService.isSubscribe(userService.getCurrentUser().getUsername(),username));
         return "PageUser";
     }
     @PostMapping("/page/{username}")
@@ -29,7 +38,7 @@ public class PageController {
         userService.subscriptionOrUnsubscription(userService.getCurrentUsername(),username);
         model.addAttribute("SubscribeButton", userService.isSubscribe(userService.getCurrentUsername(),username));
 
-        return showPage(username,model);
+        return "PageUser";
     }
 
 

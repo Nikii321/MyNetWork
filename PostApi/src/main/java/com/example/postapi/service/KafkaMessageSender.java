@@ -10,9 +10,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RATE_REQUESTS;
+import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RATE_RESPONSE;
 import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RATE_RESPONSE_NEWS;
 
 @Service
@@ -35,7 +34,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", message, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_REQUESTS, messageAsString);
+        kafkaTemplate.send(TOPIC_RATE_RESPONSE, messageAsString);
     }
     @Override
     public void send(List<Post> message, Long id) {

@@ -9,6 +9,11 @@
 <html>
 <head>
   <title>Title</title>
+  <style>
+    body{
+      background-image: url("${pageContext.request.contextPath}/resources/image/defoult.jpg");
+    }
+  </style>
 </head>
 <body>
 <form action="${Name}" method="post" enctype="multipart/form-data">

@@ -7,12 +7,12 @@ import java.io.IOException;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private  String path = "/Users/nikolajvereschagin/Desktop/RusFaceApp/src/main/webapp/resources/image";
+    private  String path = "/Users/nikolajvereschagin/Desktop/MyNetWork/src/main/webapp/resources/image";
 
     public boolean upload(MultipartFile file, String path, String fileName){
 
-        String realPath = path + "/" + fileName+".jpg";
 
+        String realPath = path + "/" + fileName+".jpg";
 
         File dest = new File(realPath);
 
@@ -30,6 +30,5 @@ public class ImageServiceImpl implements ImageService {
             e.printStackTrace();
             return false;
         }
-
     }
 }

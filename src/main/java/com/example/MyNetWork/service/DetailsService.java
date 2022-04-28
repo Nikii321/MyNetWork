@@ -1,9 +1,11 @@
 package com.example.MyNetWork.service;
 
+
 import com.example.MyNetWork.entity.UsDetails;
-import org.springframework.stereotype.Service;
+import com.example.detailsapi.model.Details;
 
 public interface DetailsService {
-    public void save(UsDetails usDetails);
-    public UsDetails findById(Long id);
+    public void addHashMap(Long id, Details details);
+    public Details getDetails(Long id) throws InterruptedException;
+    public void sendKafkaListId();
 }

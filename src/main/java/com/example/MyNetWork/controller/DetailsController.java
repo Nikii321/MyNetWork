@@ -3,7 +3,9 @@ package com.example.MyNetWork.controller;
 
 import com.example.MyNetWork.entity.UsDetails;
 import com.example.MyNetWork.entity.User;
+import com.example.MyNetWork.service.KafkaMessageSender;
 import com.example.MyNetWork.service.UserService;
+import com.example.detailsapi.model.Details;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +20,14 @@ public class DetailsController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private KafkaMessageSender kafkaMessageSender;
 
 
 
 
     @GetMapping("/change")
-    public String registration( Model model, Model modelName) {
+    public String showChange( Model model, Model modelName) {
 
         User user = userService.findUserByUsername(userService.getCurrentUsername());
         if(user.getUsDetails() == null){
@@ -38,7 +42,7 @@ public class DetailsController {
 
     @PostMapping("/change")
     public String changeUser(
-            @ModelAttribute("UserDetails") UsDetails details,
+            @ModelAttribute("UserDetails") Details details,
             BindingResult bindingResult) {
 
 
@@ -48,8 +52,8 @@ public class DetailsController {
         }
         User user = userService.findUserByUsername(userService.getCurrentUsername());
 
-
-        userService.saveUserDetails(user, details);
+        details.setId(user.getId());
+        kafkaMessageSender.send(details);
 
 
         return "redirect:/page/"+user.getUsername();

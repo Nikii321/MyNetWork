@@ -7,6 +7,11 @@
     <meta charset="utf-8">
     <title>Admin panel</title>
     <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
+    <style>
+        body{
+            background-image: url("${pageContext.request.contextPath}/resources/image/defoult.jpg");
+        }
+    </style>
 </head>
 
 <body>

@@ -1,5 +1,6 @@
 package com.example.MyNetWork.service;
 
+import com.example.detailsapi.model.Details;
 import com.example.postapi.model.Post;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,8 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-import static com.example.MyNetWork.config.KafkaProducerConfig.TOPIC_RATE_REQUESTS;
-import static com.example.MyNetWork.config.KafkaProducerConfig.TOPIC_RATE_REQUESTS_NEWS;
+import static com.example.MyNetWork.config.KafkaProducerConfig.*;
 
 @Service
 @Slf4j
@@ -25,7 +25,10 @@ public class KafkaMessageSender implements MessageSender {
 
     @Override
     public void send(Post message) {
-        log.info("send message:{}", message);
+        System.out.println("\n\n\n\n\n");
+        System.out.println("nice");
+        System.out.println("\n\n\n\n\n");
+        log.info("send post for add message:{}", message);
         String messageAsString = message.PostToString();
         try {
             messageAsString = objectMapper.writeValueAsString(messageAsString);
@@ -38,7 +41,7 @@ public class KafkaMessageSender implements MessageSender {
 
     @Override
     public void send(Set<Long> SubscriberId, Long id) {
-        log.info("send message:{}", SubscriberId);
+        log.info("send list<long> for news, message:{}", SubscriberId);
         String messageAsString = id+",";
         messageAsString += SubscriberId.toString().replace("[","").replace("]","").replace(" ","");
         try {
@@ -48,6 +51,30 @@ public class KafkaMessageSender implements MessageSender {
             throw new RuntimeException();
         }
         kafkaTemplate.send(TOPIC_RATE_REQUESTS_NEWS, messageAsString);
+    }
+    @Override
+    public void send(Details details) {
+        log.info("send details message:{}", details);
+        String messageAsString = details.UsDetailsToString();
+        try {
+            messageAsString = objectMapper.writeValueAsString(messageAsString);
+        } catch (JsonProcessingException ex) {
+            log.error("can't serialize message:{}", details, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_RATE_REQUESTS_DETAILS_ADD, messageAsString);
+    }
+    @Override
+    public void send(Long id) {
+        log.info("send details id message:{}", id);
+        String messageAsString = String.valueOf(id);
+        try {
+            messageAsString = objectMapper.writeValueAsString(messageAsString);
+        } catch (JsonProcessingException ex) {
+            log.error("can't serialize message:{}", id, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_RATE_REQUESTS_DETAILS, messageAsString);
     }
 
 

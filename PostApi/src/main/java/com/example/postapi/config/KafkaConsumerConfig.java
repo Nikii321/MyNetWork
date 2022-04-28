@@ -88,6 +88,7 @@ class KafkaConsumerConfig {
         response.collectList().subscribe(s->{
             kafkaMessageSender.send(s, finalId);
         });
+        response.subscribe(System.out::println);
     }
 
 

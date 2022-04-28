@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "us_details")
 public class UsDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -144,7 +144,7 @@ public class UsDetails {
 
     @Override
     public String toString() {
-        return "UsDetails{" +
+        return "Details{" +
                 "id=" + id +
                 ", birthday='" + birthday + '\'' +
                 ", work='" + work + '\'' +
