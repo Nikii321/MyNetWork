@@ -26,7 +26,6 @@ public class AdminServiceImpl implements AdminService{
         Role role =new Role(1L, "ROLE_USER");
         Set<Role> set = new HashSet<>();
         set.add(role);
-        User user = userService.getCurrentUser();
         return userRepository.findAllByRoles(set);
     }
     public List<User> allBanForAdmin() {

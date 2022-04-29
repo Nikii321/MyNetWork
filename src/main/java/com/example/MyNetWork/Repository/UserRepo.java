@@ -11,4 +11,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
     User findByActivationCode(String code);
     List<User> findAllByRoles(Set<Role> roleSet) ;
+    List<User> findAllByUsernameIsLike(String string);
+
 }

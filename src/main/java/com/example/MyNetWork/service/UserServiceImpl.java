@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -147,6 +148,18 @@ public class UserServiceImpl implements UserService {
             subscribe(userAuthor, userSubscriber);
         }
     }
+    public List<User> getPopularUsers(){
+
+        List<User> users = userRepository.findAll();
+        users = users.stream().parallel().filter(
+                s->!(s.getRoles()
+                .contains(new Role(4L,"ROLE_BANED")) || s.getRoles().contains(new Role(0L, "NO_ACTIVE")))
+                )
+                .sorted(Comparator.comparingInt(s->-1*s.getSubscribers().size()))
+
+                .collect(Collectors.toList());
+        return users;
+    }
 
 
 
@@ -159,31 +172,48 @@ public class UserServiceImpl implements UserService {
         return res;
     }
 
-    public void subscription(User userSubscriber, User userAuthor){
+    private void subscription(User userSubscriber, User userAuthor){
         Set<User> usersSubscriptions = userSubscriber.getSubscriptions();
         usersSubscriptions.add(userAuthor);
         userRepository.save(userSubscriber);
 
     }
-    public void subscribe(User userSubscriber, User userAuthor){
+    private void subscribe(User userSubscriber, User userAuthor){
 
         Set<User> usersSubscriber = userSubscriber.getSubscribers();
         usersSubscriber.add(userAuthor);
         userRepository.save(userSubscriber);
 
     }
-    public void unsubscription(User userSubscriber, User userAuthor){
+    private void unsubscription(User userSubscriber, User userAuthor){
         Set<User> usersSubscriptions = userSubscriber.getSubscriptions();
         usersSubscriptions.remove(userAuthor);
         userRepository.save(userSubscriber);
 
     }
-    public void unsubscribe(User userSubscriber, User userAuthor){
+    private void unsubscribe(User userSubscriber, User userAuthor){
 
         Set<User> usersSubscriber = userSubscriber.getSubscribers();
         usersSubscriber.remove(userAuthor);
         userRepository.save(userSubscriber);
 
+    }
+    public List<User> findUsersListByName(String name){
+        User user = findUserByUsername(name);
+        if(user!= null){
+            return new ArrayList<>(List.of(user));
+        }
+        List<User> list = userRepository.findAllByUsernameIsLike(name+"%");
+        if(list.isEmpty()){
+            list = userRepository.findAllByUsernameIsLike("%"+name+"%");
+        }
+        return list.stream().parallel().filter(
+                        s->!(s.getRoles()
+                                .contains(new Role(4L,"ROLE_BANED")) || s.getRoles().contains(new Role(0L, "NO_ACTIVE")))
+                )
+                .sorted(Comparator.comparingInt(s->-1*s.getSubscribers().size()))
+
+                .collect(Collectors.toList());
     }
 
 

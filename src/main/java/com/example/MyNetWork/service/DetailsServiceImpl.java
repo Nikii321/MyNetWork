@@ -1,16 +1,11 @@
 package com.example.MyNetWork.service;
 
-import com.example.MyNetWork.Repository.DetailsRepo;
-import com.example.MyNetWork.entity.UsDetails;
 import com.example.MyNetWork.entity.User;
 import com.example.detailsapi.model.Details;
-import com.example.postapi.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class DetailsServiceImpl implements DetailsService{

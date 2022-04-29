@@ -18,7 +18,7 @@
     <p>${Error}</p>
     <c:forEach items="${NewPost}" var="post">
         <p>${post.fullName}</p>
-        <p>-----------------------------------</p>
+        <img src="${contextPath}/resources/image/post/${username}.jpg"  style="height: 600px; width: 400px">
         <p>${post.text}</p>
         <p>-----------------------------------</p>
         <p></p>

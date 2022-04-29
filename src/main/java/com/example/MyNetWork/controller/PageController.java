@@ -1,5 +1,6 @@
 package com.example.MyNetWork.controller;
 
+import com.example.MyNetWork.entity.User;
 import com.example.MyNetWork.service.DetailsService;
 import com.example.MyNetWork.service.MessageSender;
 import com.example.MyNetWork.service.UserService;
@@ -26,9 +27,12 @@ public class PageController {
     @GetMapping("/page/{username}")
     public String showPage(@PathVariable("username") String username, Model model) throws InterruptedException {
         kafkaMessageSender.send(userService.findUserByUsername(username).getId());
-        Details details= detailsService.getDetails(userService.findUserByUsername(username).getId());
+        User user= userService.findUserByUsername(username);
+
+        Details details= detailsService.getDetails(user.getId());
         model.addAttribute("UserDetails", details);
-        System.out.println(details);
+        model.addAttribute("SubscribersCount", user.getSubscribers().size());
+        model.addAttribute("SubscriptionsCount", user.getSubscriptions().size());
         model.addAttribute("I", userService.getCurrentUsername());
         model.addAttribute("SubscribeButton", userService.isSubscribe(userService.getCurrentUser().getUsername(),username));
         return "PageUser";

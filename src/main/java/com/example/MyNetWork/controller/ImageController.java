@@ -18,7 +18,6 @@ public class ImageController {
 
     @GetMapping("/fileUpload")
     public String showUploaderImage(){
-        System.out.println("start");
         return "fileLouder";
     }
 

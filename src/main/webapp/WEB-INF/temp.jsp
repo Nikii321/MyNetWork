@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>RusFace</title>
+  <title>MyNetWork</title>
 </head>
 <body>
 <center>

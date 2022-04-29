@@ -12,6 +12,7 @@
   <style>
     body{
       background-image: url("${pageContext.request.contextPath}/resources/image/defoult.jpg");
+      background-color: #f1f1f1;
     }
   </style>
 </head>

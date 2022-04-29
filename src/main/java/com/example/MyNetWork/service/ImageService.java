@@ -7,4 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageService {
     public boolean upload(MultipartFile file, String path, String fileName);
+    public String upload(MultipartFile file);
 }

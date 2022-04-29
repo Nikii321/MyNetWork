@@ -54,6 +54,7 @@
 
         </form>
     </c:if>
+    <h4>Subscribers: ${SubscribersCount}           Subscriptions: ${SubscriptionsCount}</h4>
 
     <p/>
     <p/>

@@ -22,6 +22,8 @@ public interface UserService extends UserDetailsService {
     public User getCurrentUser();
     public boolean isSubscribe(User userSubscriber, User userAuthor);
     public void subscriptionOrUnsubscription(String usernameSubscriber, String user);
+    public List<User> getPopularUsers();
+    public List<User> findUsersListByName(String name);
 
     public Set<Long> getListIdUser(User user);
 }
