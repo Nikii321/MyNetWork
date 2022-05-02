@@ -30,18 +30,18 @@ public class DetailsServiceImpl implements DetailsService{
     public Details getDetails(Long id) throws InterruptedException {
 
         Details details = detailsHashMap.get(id);
+        Details newDetails = null;
 
         int i=0;
-        var data = System.currentTimeMillis();
-        Thread.sleep(300);
-        while (details == null){
+        var data =  System.currentTimeMillis();
+        while (newDetails == null || newDetails.equals(details) ) {
 
-            details = detailsHashMap.get(id);
+            newDetails = detailsHashMap.get(id);
             if(System.currentTimeMillis()-data>=5000){
-                break;
+                return details;
             }
         }
-        return details;
+        return newDetails;
     }
 
     public void sendKafkaListId() {

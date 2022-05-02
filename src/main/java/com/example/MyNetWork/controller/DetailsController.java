@@ -1,11 +1,12 @@
 package com.example.MyNetWork.controller;
 
 
-import com.example.MyNetWork.entity.UsDetails;
 import com.example.MyNetWork.entity.User;
+import com.example.MyNetWork.service.DetailsService;
 import com.example.MyNetWork.service.KafkaMessageSender;
 import com.example.MyNetWork.service.UserService;
 import com.example.detailsapi.model.Details;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,19 +23,24 @@ public class DetailsController {
     private UserService userService;
     @Autowired
     private KafkaMessageSender kafkaMessageSender;
+    @Autowired
+    private DetailsService detailsService;
 
 
 
 
+    @SneakyThrows
     @GetMapping("/change")
     public String showChange( Model model, Model modelName) {
-
         User user = userService.findUserByUsername(userService.getCurrentUsername());
-        if(user.getUsDetails() == null){
-            UsDetails usDetails = new UsDetails();
-            user.setUsDetails(usDetails);
+
+        kafkaMessageSender.send(user.getId());
+        Details details= detailsService.getDetails(user.getId());
+        if(details == null){
+            Details  usDetails = new Details();
+            usDetails.setId(user.getId());
         }
-        model.addAttribute("UserDetails",user.getUsDetails());
+        model.addAttribute("UserDetails",details);
         modelName.addAttribute("Name", userService.getCurrentUsername());
 
         return "UserChangeInfo";

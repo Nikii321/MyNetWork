@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import static com.example.detailsapi.config.KafkaProducerConfig.TOPIC_RATE_REQUESTS;
+import static com.example.detailsapi.config.KafkaProducerConfig.TOPIC_ADD_DETAILS_RESPONSE;
 
 
 @Service
@@ -32,7 +32,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", message, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_REQUESTS, messageAsString);
+        kafkaTemplate.send(TOPIC_ADD_DETAILS_RESPONSE, messageAsString);
     }
 
 }

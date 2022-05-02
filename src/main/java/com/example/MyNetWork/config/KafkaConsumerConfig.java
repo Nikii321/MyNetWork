@@ -28,6 +28,9 @@ public class KafkaConsumerConfig {
     public static final String TOPIC_RATE_REQUESTS_DETAILS_ADD = "ADD_DETAILS_RESPONSE";
     public static final String TOPIC_RATE_REQUESTS_DETAILS = "DETAILS_SHOW_RESPONSE";
 
+    public static final String TOPIC_DELETE_POST_RESPONSE = "DELETE_POST_RESPONSE";
+    public static final String TOPIC_UPDATE_POST_RESPONSE = "UPDATE_SHOW_RESPONSE";
+
     public static final String GROUP_ID_POST = "postApi";
     public static final String GROUP_ID_DETAILS = "userDetailsApi";
 
@@ -40,13 +43,9 @@ public class KafkaConsumerConfig {
     @Autowired
     DetailsService detailsService;
 
-    @Bean
-    public NewTopic topic3 () {
-        return new NewTopic("baeldung", 1, (short) 1);
-    }
 
     @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_RATE_REQUESTS)
-    public void  rateRequestListen(String msgAsString) {
+    public void  AddPostResponseListener(String msgAsString) {
         Post message = new Post();
         try {
             message.takeData(objectMapper.readValue(msgAsString,String.class));
@@ -57,7 +56,7 @@ public class KafkaConsumerConfig {
         }
     }
     @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_RATE_RESPONSE_NEWS)
-    public void showNewsResponse(String msgAsString) {
+    public void NewsResponseListener(String msgAsString) {
         String[] data;
         try {
             data = objectMapper.readValue(msgAsString,String.class).split(" ; ");
@@ -81,7 +80,7 @@ public class KafkaConsumerConfig {
 
     }
     @KafkaListener(groupId = GROUP_ID_DETAILS, topics = TOPIC_RATE_REQUESTS_DETAILS_ADD)
-    public void  addDetailsResponse(String msgAsString) {
+    public void  addDetailsResponseListener(String msgAsString) {
         Details message = new Details();
         try {
             message.takeData(objectMapper.readValue(msgAsString,String.class));
@@ -95,7 +94,7 @@ public class KafkaConsumerConfig {
 
     }
     @KafkaListener(groupId = GROUP_ID_DETAILS, topics = TOPIC_RATE_REQUESTS_DETAILS)
-    public void showDetailsResponse(String msgAsString) {
+    public void showDetailsResponseListener(String msgAsString) {
         Details usDetails= new Details();
         try {
             usDetails.takeData(objectMapper.readValue(msgAsString,String.class));
@@ -105,6 +104,28 @@ public class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
 
+    }
+    @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_UPDATE_POST_RESPONSE)
+    public void  PostUpdateResponseListener(String msgAsString) {
+        Post message = new Post();
+        try {
+            message.takeData(objectMapper.readValue(msgAsString,String.class));
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
+    }
+    @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_DELETE_POST_RESPONSE)
+    public void PostDeleteResponseListener(String msgAsString) {
+        String message;
+        try {
+            message = objectMapper.readValue(msgAsString,String.class);
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
     }
 
 }

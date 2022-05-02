@@ -7,22 +7,27 @@
     <meta charset="utf-8">
     <title>News</title>
     <style>
-        body{
+        body {
             background-image: url("${pageContext.request.contextPath}/resources/image/defoult.jpg");
             color: #f1f1f1;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
+
 </head>
 <body>
 <div>
     <p>${Error}</p>
     <c:forEach items="${NewPost}" var="post">
-        <p>${post.fullName}</p>
-        <img src="${contextPath}/resources/image/post/${username}.jpg"  style="height: 600px; width: 400px">
-        <p>${post.text}</p>
-        <p>-----------------------------------</p>
-        <p></p>
-        <p/><p/>
+        <div class="brd">
+            <a class=".titl" href="http://localhost:8081/page/${post.authorName}"><p >${post.authorName}</p></a>
+            <c:if test="${post.path!=null}">
+            <p><img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img" ></p>
+            </c:if>
+            <p>${post.text}</p>
+
+        </div>
+
     </c:forEach>
 
     <a href="/" style="color: #448AFF">Main</a>

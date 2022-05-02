@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RATE_RESPONSE;
-import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RATE_RESPONSE_NEWS;
+import static com.example.postapi.config.KafkaProducerConfig.TOPIC_ADD_POST_RESPONSE;
+import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RESPONSE_NEWS;
+import static com.example.postapi.config.KafkaProducerConfig.TOPIC_DELETE_POST_RESPONSE;
+import static com.example.postapi.config.KafkaProducerConfig.TOPIC_UPDATE_POST_RESPONSE;
+
+
 
 @Service
 @Slf4j
@@ -34,7 +38,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", message, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_RESPONSE, messageAsString);
+        kafkaTemplate.send(TOPIC_ADD_POST_RESPONSE, messageAsString);
     }
     @Override
     public void send(List<Post> message, Long id) {
@@ -54,6 +58,32 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", message, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_RESPONSE_NEWS, messageAsString);
+        kafkaTemplate.send(TOPIC_RESPONSE_NEWS, messageAsString);
     }
+    @Override
+    public void send(Void unused) {
+        log.info("post is deleted");
+        var messageAsString="post is deleted";
+        try {
+            messageAsString = objectMapper.writeValueAsString(messageAsString);
+        } catch (JsonProcessingException ex) {
+            log.error("can't serialize message:{}", "post is deleted", ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_DELETE_POST_RESPONSE, messageAsString);
+    }
+    @Override
+    public void sendUpdate(Post post) {
+        log.info("send message:{}", post);
+        var messageAsString = post.PostToString();
+        try {
+            messageAsString = objectMapper.writeValueAsString(messageAsString);
+        } catch (JsonProcessingException ex) {
+            log.error("can't serialize message:{}", post, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_UPDATE_POST_RESPONSE, messageAsString);
+    }
+
+
 }

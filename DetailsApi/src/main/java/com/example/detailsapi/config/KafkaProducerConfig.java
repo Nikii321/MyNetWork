@@ -5,14 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.config.TopicBuilder;
 
 public class KafkaProducerConfig {
-    public static final String TOPIC_RATE_REQUESTS = "ADD_DETAILS_RESPONSE";
-    public static final String TOPIC_RATE_RESPONSE_NEWS = "DETAILS_SHOW_RESPONSE";
+    public static final String TOPIC_ADD_DETAILS_RESPONSE= "ADD_DETAILS_RESPONSE";
+    public static final String TOPIC_DETAILS_SHOW_RESPONSE= "DETAILS_SHOW_RESPONSE";
 
 
     @Bean
     public NewTopic topic2() {
         return TopicBuilder
-                .name(TOPIC_RATE_REQUESTS)
+                .name(TOPIC_ADD_DETAILS_RESPONSE)
                 .partitions(3)
                 .replicas(2)
                 .build();
@@ -20,7 +20,7 @@ public class KafkaProducerConfig {
     @Bean
     public NewTopic topicSnowNewsUser() {
         return TopicBuilder
-                .name(TOPIC_RATE_RESPONSE_NEWS)
+                .name(TOPIC_DETAILS_SHOW_RESPONSE)
                 .partitions(3)
                 .replicas(2)
                 .build();

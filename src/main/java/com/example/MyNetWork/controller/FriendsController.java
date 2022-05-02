@@ -26,7 +26,9 @@ public class FriendsController {
     @PostMapping("/friend")
     public String findUserByUsername(@RequestParam(required = true, defaultValue = "") String name, Model model){
         List<User> users = userService.findUsersListByName(name);
-
+        if(users.isEmpty()||users == null){
+            model.addAttribute("ERROR", "Not found");
+        }
         model.addAttribute("Users", users);
         return "friendsList";
     }

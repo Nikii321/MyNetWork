@@ -25,7 +25,7 @@ public class Post {
     private String text;
     private String path;
     private String authorName;
-    private String fullName;
+
     private Long authorId;
     private Instant date;
 
@@ -41,7 +41,6 @@ public class Post {
         String result = "";
         result += "id:"+id+",";
         result+= "AuthorName:"+authorName+",";
-        result+="AuthorFullName:"+fullName+",";
         result+="text:"+text+",";
         result += "AuthorId:"+authorId+",";
         result+="path:"+path+",";
@@ -63,9 +62,7 @@ public class Post {
                 case "text":
                     this.text = strings[1];
                     break;
-                case "AuthorFullName":
-                    this.fullName = strings[1];
-                    break;
+
                 case "path":
                     this.path = strings[1];
                     break;

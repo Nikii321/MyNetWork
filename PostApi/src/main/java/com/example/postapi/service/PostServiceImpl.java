@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
+import java.util.Comparator;
 
 @Service
 @Slf4j
@@ -26,6 +27,7 @@ public class PostServiceImpl implements PostService{
         return postRepo.findById(id);
     }
     public Flux<Post> showByAuthorId(Long id){
+
         return postRepo.findAllByAuthorId(id);
     }
     public Mono<Post> save(Mono<Post> newPost){
@@ -52,7 +54,7 @@ public class PostServiceImpl implements PostService{
     }
     public Flux<Post> showUserNews(Flux<Long> authorId){
 
-        return authorId.flatMap(this::showByAuthorId);
+        return authorId.flatMap(this::showByAuthorId).sort(Comparator.comparing(Post::getDate).reversed());
     }
 
 

@@ -14,10 +14,14 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    public static final String TOPIC_RATE_REQUESTS = "ADD_POST_REQUESTS";
-    public static final String TOPIC_RATE_REQUESTS_NEWS = "NEWS_SHOW_REQUESTS";
-    public static final String TOPIC_RATE_REQUESTS_DETAILS_ADD = "ADD_DETAILS_REQUESTS";
-    public static final String TOPIC_RATE_REQUESTS_DETAILS = "DETAILS_SHOW_REQUESTS";
+    public static final String TOPIC_REQUESTS = "ADD_POST_REQUESTS";
+    public static final String TOPIC_REQUESTS_NEWS = "NEWS_SHOW_REQUESTS";
+    public static final String TOPIC_REQUESTS_DETAILS_ADD = "ADD_DETAILS_REQUESTS";
+    public static final String TOPIC_REQUESTS_DETAILS = "DETAILS_SHOW_REQUESTS";
+
+
+    public static final String TOPIC_REQUESTS_POST_DELETE = "POST_DELETE_REQUESTS";
+    public static final String TOPIC_REQUESTS_POST_UPDATE = "POST_UPDATE_REQUESTS";
 
 
     private String bootstrapAddress = "localhost:9092";
@@ -31,13 +35,20 @@ public class KafkaProducerConfig {
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic("baeldung", 1, (short) 1);
+        return new NewTopic("postAdd", 1, (short) 1);
     }
     @Bean
-    public NewTopic topicNews() { return new NewTopic("baeldung", 2, (short) 1);
+    public NewTopic topicNews() { return new NewTopic("news", 2, (short) 1);
     }
     @Bean
     public NewTopic topicDetails() { return new NewTopic("usDetails", 3, (short) 2);
     }
+    @Bean
+    public NewTopic topicDeletePost() { return new NewTopic("deletePost", 3, (short) 2);
+    }
+    @Bean
+    public NewTopic topicUpdatePost() { return new NewTopic("updatePost", 3, (short) 2);
+    }
+
 
 }

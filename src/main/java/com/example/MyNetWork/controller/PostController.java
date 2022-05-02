@@ -33,29 +33,28 @@ public class PostController {
     @GetMapping("/post")
     public String showPost( Model model) {
 
-        messageSender.send(5L);
-        model.addAttribute("NewPost",new Post());
+        model.addAttribute("NewPost", "");
+        model.addAttribute("I", userService.getCurrentUsername());
+
 
         return "post";
     }
     @PostMapping("/post")
-    public String changeUser(@ModelAttribute("NewPost") Post post,
-                             @ModelAttribute("File") MultipartFile file,
-                             @RequestParam(required = true, defaultValue = "") String action) {
-        if(action.equals("addFile")) {
+    public String changeUser(@RequestParam(required = true, defaultValue = "") String text,
+                             @ModelAttribute("File") MultipartFile file) {
+        Post post = new Post();
+        if(file != null) {
             post.setPath(imageService.upload(file));
-            return "post";
         }
-
+        post.setText(text);
 
         User user = userService.getCurrentUser();
-        post.setFullName(user.getUsDetails().getNameUser());
+
         post.setAuthorId(user.getId());
         post.setAuthorName(user.getUsername());
         messageSender.send(post);
 
-
-
+        System.out.println(post);
         return "redirect:/page/"+user.getUsername();
     }
 

@@ -42,8 +42,7 @@ public class User implements UserDetails {
 
     @Column
     private boolean isActive=false;
-    @OneToOne
-    private UsDetails usDetails;
+
     @ManyToMany
     private Set<User> subscribers;
     @ManyToMany
@@ -65,13 +64,7 @@ public class User implements UserDetails {
         this.subscriptions = subscriptions;
     }
 
-    public UsDetails getUsDetails() {
-        return usDetails;
-    }
 
-    public void setUsDetails(UsDetails usDetails) {
-        this.usDetails = usDetails;
-    }
 
     public boolean isActive() {
         return isActive;
@@ -165,7 +158,7 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return isActive == user.isActive && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password)  && Objects.equals(roles, user.roles) && Objects.equals(activationCode, user.activationCode) && Objects.equals(email, user.email) && Objects.equals(usDetails, user.usDetails) && Objects.equals(subscribers, user.subscribers) && Objects.equals(subscriptions, user.subscriptions);
+        return isActive == user.isActive && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password)  && Objects.equals(roles, user.roles) && Objects.equals(activationCode, user.activationCode) && Objects.equals(email, user.email)  && Objects.equals(subscribers, user.subscribers) && Objects.equals(subscriptions, user.subscriptions);
     }
 
 
@@ -181,7 +174,6 @@ public class User implements UserDetails {
                 ", activationCode='" + activationCode + '\'' +
                 ", email='" + email + '\'' +
                 ", isActive=" + isActive +
-                ", usDetails=" + usDetails +
                 '}';
     }
 

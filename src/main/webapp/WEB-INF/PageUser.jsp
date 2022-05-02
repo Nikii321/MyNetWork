@@ -14,11 +14,12 @@
     <link rel="script" type="javascript" href="${contextPath}/resources/js/main.js">
 
     <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
+
 </head>
-<body>
+<body style="text-align: center; font-size: 20px;">
 
 <div>
-    <img src="${contextPath}/resources/image/${username}.jpg" style="height: 200px; width: 200px"/>
+    <img src="${contextPath}/resources/image/${username}.jpg" style="height: 400px; width: 600px"/>
     <p/>
     <h>Name: ${UserDetails.nameUser}</h>
 

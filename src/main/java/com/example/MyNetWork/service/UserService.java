@@ -1,13 +1,10 @@
 package com.example.MyNetWork.service;
-import com.example.MyNetWork.entity.UsDetails;
 import com.example.MyNetWork.entity.User;
-import com.example.postapi.model.Post;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 
 public interface UserService extends UserDetailsService {

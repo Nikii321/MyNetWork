@@ -10,4 +10,6 @@ public interface MessageSender {
     public void send(Set<Long>  SubscriberId, Long id);
     public void send(Long id);
     public void send(Details details);
+    public void sendUpdatePostRequest(Post message);
+    public void sendDeletePostRequest(Long id);
 }

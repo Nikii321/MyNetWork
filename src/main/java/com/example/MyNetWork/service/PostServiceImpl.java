@@ -43,8 +43,6 @@ public class PostServiceImpl implements PostService {
                 break;
             }
         }
-
-
         return posts;
     }
 

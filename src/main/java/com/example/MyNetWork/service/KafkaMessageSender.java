@@ -25,9 +25,6 @@ public class KafkaMessageSender implements MessageSender {
 
     @Override
     public void send(Post message) {
-        System.out.println("\n\n\n\n\n");
-        System.out.println("nice");
-        System.out.println("\n\n\n\n\n");
         log.info("send post for add message:{}", message);
         String messageAsString = message.PostToString();
         try {
@@ -36,7 +33,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", message, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_REQUESTS, messageAsString);
+        kafkaTemplate.send(TOPIC_REQUESTS, messageAsString);
     }
 
     @Override
@@ -50,7 +47,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", SubscriberId, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_REQUESTS_NEWS, messageAsString);
+        kafkaTemplate.send(TOPIC_REQUESTS_NEWS, messageAsString);
     }
     @Override
     public void send(Details details) {
@@ -62,7 +59,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", details, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_REQUESTS_DETAILS_ADD, messageAsString);
+        kafkaTemplate.send(TOPIC_REQUESTS_DETAILS_ADD, messageAsString);
     }
     @Override
     public void send(Long id) {
@@ -74,8 +71,34 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", id, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RATE_REQUESTS_DETAILS, messageAsString);
+        kafkaTemplate.send(TOPIC_REQUESTS_DETAILS, messageAsString);
     }
+    @Override
+    public void sendDeletePostRequest(Long id) {
+        log.info("send post id for delete:{} ", id);
+        String messageAsString = String.valueOf(id);
+        try {
+            messageAsString = objectMapper.writeValueAsString(messageAsString);
+        } catch (JsonProcessingException ex) {
+            log.error("can't serialize message:{}", id, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_REQUESTS_POST_DELETE, messageAsString);
+    }
+    @Override
+    public void sendUpdatePostRequest(Post message) {
+        log.info("send post for add message:{}", message);
+        String messageAsString = message.PostToString();
+        try {
+            messageAsString = objectMapper.writeValueAsString(messageAsString);
+        } catch (JsonProcessingException ex) {
+            log.error("can't serialize message:{}", message, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_REQUESTS_POST_UPDATE, messageAsString);
+    }
+
+
 
 
 

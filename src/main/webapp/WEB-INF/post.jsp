@@ -17,23 +17,20 @@
 </head>
 <body >
 <div>
-    <form  method="post" enctype="multipart/form-data">
-        <p>Choose file:<input type="file" name="file" /></p>
-        <input type="hidden" name="action" value="addFile"/>
-        <p><input type="submit"  value=«Send»/></p>
-    </form>
-
-    <form:form method="POST" modelAttribute="NewPost">
 
 
-        <div>
-            <form:input style="border-radius: 6.5px; height: 30px; width: 250px;background-color: seashell;" name="text" type="text" path="text" placeholder="Text"
-                        autofocus="true"></form:input>
-        </div>
-        <input type="hidden" name="action" value="confirm"/>
-        <button type="submit" style="width: 190px; height: 30px; background-color: skyblue; border-radius:6.5px;margin-left: 0px">Confirm</button>
 
-    </form:form>
+        <form  method="post" enctype="multipart/form-data">
+            <p>Choose file:<input type="file" name="file" /></p>
+
+
+            <p><input style="border-radius: 6.5px; height: 30px; width: 250px;background-color: seashell;" name="text"></p>
+
+            <p><input style="width: 190px; height: 30px; background-color: #448AFF; border-radius:6.5px;margin-left: 0px" type="submit"  value=«Send»/></p>
+        </form>
+
+
+
     <button  style="width: 190px; height: 30px; background-color: red; border-radius:6.5px;margin-left: 0px"><a href="/page/${Name}" style="text-decoration: none">Close</a></button>
 </div>
 </body>

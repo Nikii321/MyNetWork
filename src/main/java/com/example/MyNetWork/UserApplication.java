@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-public class Application {
+public class  UserApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(UserApplication.class, args);
     }
 }

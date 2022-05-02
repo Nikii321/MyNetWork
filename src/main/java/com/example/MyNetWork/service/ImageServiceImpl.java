@@ -45,7 +45,7 @@ public class ImageServiceImpl implements ImageService {
 
         try {
             file.transferTo(dest);
-            return path;
+            return str;
         } catch (IllegalStateException e) {
             e.printStackTrace();
             return null;
@@ -56,9 +56,9 @@ public class ImageServiceImpl implements ImageService {
 
     }
     private String randomString(){
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 8;
+        int leftLimit = 97;
+        int rightLimit = 122;
+        int targetStringLength = 12;
         Random random = new Random();
 
         return  random.ints(leftLimit, rightLimit + 1)
