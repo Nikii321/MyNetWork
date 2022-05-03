@@ -57,7 +57,6 @@ class KafkaConsumerConfig {
         }
         Mono<Details> mono = usDetailsService.saveOrUpdate(message.getId(), Mono.just(message));
         mono.subscribe(kafkaMessageSender::send);
-        mono.subscribe(System.out::println);
 
 
 

@@ -54,7 +54,7 @@
     </div>
     <button type="submit" style="width: 190px; height: 30px; background-color: skyblue; border-radius:6.5px;margin-left: 0px">Confirm</button>
   </form:form>
-  <button  style="width: 190px; height: 30px; background-color: red; border-radius:6.5px;margin-left: 0px"><a href="/page/${Name}" style="text-decoration: none">Close</a></button>
+  <button  style="width: 190px; height: 30px; background-color: red; border-radius:6.5px;margin-left: 0px"><a href="/page/${I}" style="text-decoration: none">Close</a></button>
 </div>
 </body>
 </html>

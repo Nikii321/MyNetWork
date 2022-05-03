@@ -31,7 +31,7 @@ public class DetailsController {
 
     @SneakyThrows
     @GetMapping("/change")
-    public String showChange( Model model, Model modelName) {
+    public String showChange( Model model) {
         User user = userService.findUserByUsername(userService.getCurrentUsername());
 
         kafkaMessageSender.send(user.getId());
@@ -41,7 +41,7 @@ public class DetailsController {
             usDetails.setId(user.getId());
         }
         model.addAttribute("UserDetails",details);
-        modelName.addAttribute("Name", userService.getCurrentUsername());
+        model.addAttribute("I", userService.getCurrentUsername());
 
         return "UserChangeInfo";
     }

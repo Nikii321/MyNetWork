@@ -10,14 +10,13 @@ import com.example.postapi.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 @Controller
 public class PostController {
@@ -40,7 +39,7 @@ public class PostController {
         return "post";
     }
     @PostMapping("/post")
-    public String changeUser(@RequestParam(required = true, defaultValue = "") String text,
+    public String addPost(@RequestParam(required = true, defaultValue = "") String text,
                              @ModelAttribute("File") MultipartFile file) {
         Post post = new Post();
         if(file != null) {
@@ -52,11 +51,12 @@ public class PostController {
 
         post.setAuthorId(user.getId());
         post.setAuthorName(user.getUsername());
-        messageSender.send(post);
+        postService.sendNewPost(post);
 
-        System.out.println(post);
+
         return "redirect:/page/"+user.getUsername();
     }
+
 
 
     @GetMapping("/news")
@@ -65,7 +65,44 @@ public class PostController {
         List<Post> posts = postService.getNews();
         model.addAttribute("NewPost",posts);
 
+
         return "news";
+    }
+    @GetMapping("/post/{username}")
+    public String AuthorsPost(@PathVariable("username") String username, Model model){
+        Long id = userService.findUserByUsername(username).getId();
+        messageSender.sendGetAuthorPosts(userService.findUserByUsername(username).getId());
+        List<Post> posts = postService.getAuthorPost(username);
+        model.addAttribute("NewPost",posts);
+        model.addAttribute("I",userService.getCurrentUser().getUsername());
+        model.addAttribute("Username",username);
+
+        return "my_post";
+    }
+    @PostMapping("/post/{username}")
+    public String AuthorsPost(@PathVariable("username") String username, Model model,
+                              @RequestParam(required = true, defaultValue = "") String action,
+                              @RequestParam(required = true, defaultValue = "") String id
+    ){
+        Long authorId = userService.findUserByUsername(username).getId();
+        model.addAttribute("I",userService.getCurrentUser().getUsername());
+        model.addAttribute("Username",username);
+        boolean isDelete = false;
+        if(action.equals("delete")){
+            isDelete = true;
+            messageSender.sendDeletePostRequest(Long.parseLong(id));
+
+        }
+        messageSender.sendGetAuthorPosts(authorId);
+        List<Post> posts = postService.getAuthorPost(username);
+        if(isDelete){
+            posts = postService.isDeleted(authorId,Long.parseLong(id));
+        }
+
+
+        model.addAttribute("NewPost",posts);
+
+        return "my_post";
     }
 
 }

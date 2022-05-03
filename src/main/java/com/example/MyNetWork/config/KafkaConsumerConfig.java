@@ -23,13 +23,16 @@ import java.util.List;
 @Slf4j
 @EnableKafka
 public class KafkaConsumerConfig {
-    public static final String TOPIC_RATE_REQUESTS = "ADD_POST_RESPONSE";
-    public static final String TOPIC_RATE_RESPONSE_NEWS = "NEWS_SHOW_RESPONSE";
+
     public static final String TOPIC_RATE_REQUESTS_DETAILS_ADD = "ADD_DETAILS_RESPONSE";
     public static final String TOPIC_RATE_REQUESTS_DETAILS = "DETAILS_SHOW_RESPONSE";
 
+    public static final String TOPIC_RATE_REQUESTS = "ADD_POST_RESPONSE";
+    public static final String TOPIC_RATE_RESPONSE_NEWS = "NEWS_SHOW_RESPONSE";
     public static final String TOPIC_DELETE_POST_RESPONSE = "DELETE_POST_RESPONSE";
     public static final String TOPIC_UPDATE_POST_RESPONSE = "UPDATE_SHOW_RESPONSE";
+    public static final String TOPIC_GET_AUTHOR_POST_RESPONSE = "POST_GET_AUTHOR_RESPONSE";
+
 
     public static final String GROUP_ID_POST = "postApi";
     public static final String GROUP_ID_DETAILS = "userDetailsApi";
@@ -89,7 +92,6 @@ public class KafkaConsumerConfig {
             log.error("can't parse message:{}", msgAsString, ex);
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
-        System.out.println(message);
         detailsService.addHashMap(message.getId(),message);
 
     }
@@ -126,6 +128,34 @@ public class KafkaConsumerConfig {
             log.error("can't parse message:{}", msgAsString, ex);
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
+
+    }
+
+
+    @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_GET_AUTHOR_POST_RESPONSE)
+    public void getAuthorPostListener(String msgAsString) {
+        String[] data;
+        try {
+            data = objectMapper.readValue(msgAsString,String.class).split(" ; ");
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
+        List<Post> list = new ArrayList<>();
+        Long id =0L;
+        for (String tmp :data){
+            if(!tmp.contains("text")){
+                id = Long.parseLong(tmp);
+                continue;
+            }
+            Post post = new Post();
+            post.takeData(tmp);
+            list.add(post);
+        }
+
+        postService.addUsersPostsHashMap(id,list);
+
     }
 
 }

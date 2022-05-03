@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
 
 </head>
-<body style="text-align: center; font-size: 20px;">
+<body style="text-align: center; font-size: 20px">
 
 <div>
     <img src="${contextPath}/resources/image/${username}.jpg" style="height: 400px; width: 600px"/>
@@ -55,15 +55,14 @@
 
         </form>
     </c:if>
-    <h4>Subscribers: ${SubscribersCount}           Subscriptions: ${SubscriptionsCount}</h4>
+    <a href="/subscriptions/${username}" style="text-decoration: none; color: black">Subscriptions</a>: ${SubscriptionsCount}          <a href="/subscribers/${username}" style="text-decoration: none; color: black">Subscribers</a>: ${SubscribersCount}
 
     <p/>
     <p/>
     <c:if test="${username.equals(I)}">
 
         <botton><a href="/change"> Change</a></botton>
-        <a href="/">Main</a>
-    <botton><a href="/post">AddPost</a></botton>
+    <botton><a href="/post/${username}">Posts</a></botton>
 
         <p/>
 
@@ -72,7 +71,7 @@
     <p/>
     <p/>
 
-    <a href="/subscriptions/${username}"> subscriptions </a> <a href="/subscribers/${username}"> subscribers </a>
+    <a href="/">Main</a>
 
 
 </div>

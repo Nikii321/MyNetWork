@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.example.MyNetWork.config.KafkaProducerConfig.*;
@@ -35,6 +36,7 @@ public class KafkaMessageSender implements MessageSender {
         }
         kafkaTemplate.send(TOPIC_REQUESTS, messageAsString);
     }
+
 
     @Override
     public void send(Set<Long> SubscriberId, Long id) {
@@ -97,8 +99,19 @@ public class KafkaMessageSender implements MessageSender {
         }
         kafkaTemplate.send(TOPIC_REQUESTS_POST_UPDATE, messageAsString);
     }
-
-
+    @Override
+    public void sendGetAuthorPosts(Long id){
+        String message = String.valueOf(id);
+        log.info("send id for author post:{}", message);
+        try {
+            message = objectMapper.writeValueAsString(message);
+        }
+        catch (JsonProcessingException ex){
+            log.error("can't serialize message:{}", message, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_REQUESTS_GET_AUTHOR_POST, message);
+    }
 
 
 

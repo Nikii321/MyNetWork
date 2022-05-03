@@ -19,10 +19,11 @@
 <div>
     <p>${Error}</p>
     <c:forEach items="${NewPost}" var="post">
+
         <div class="brd">
-            <a class=".titl" href="http://localhost:8081/page/${post.authorName}"><p >${post.authorName}</p></a>
+            <a class=".titl" href="http://localhost:8081/page/${post.authorName}"><p>${post.authorName}</p></a>
             <c:if test="${post.path!=null}">
-            <p><img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img" ></p>
+                <p><img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img"></p>
             </c:if>
             <p>${post.text}</p>
 

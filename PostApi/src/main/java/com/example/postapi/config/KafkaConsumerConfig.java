@@ -21,6 +21,9 @@ import reactor.core.publisher.Mono;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.example.postapi.config.KafkaProducerConfig.TOPIC_GET_AUTHOR_POST_RESPONSE;
+import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RESPONSE_NEWS;
+
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
@@ -34,6 +37,8 @@ class KafkaConsumerConfig {
 
     public static final String TOPIC_REQUESTS_POST_DELETE = "POST_DELETE_REQUESTS";
     public static final String TOPIC_REQUESTS_POST_UPDATE = "POST_UPDATE_REQUESTS";
+    public static final String TOPIC_REQUESTS_GET_AUTHOR_POST = "POST_GET_AUTHOR_REQUESTS";
+
 
 
 
@@ -62,7 +67,6 @@ class KafkaConsumerConfig {
     @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_NEWS)
     public void  ListNewsForUser(String msgAsString) {
         List<Long> list;
-        System.out.println(msgAsString);
         msgAsString = msgAsString.replace(" ","");
         Long id = 0L;
         try {
@@ -82,7 +86,7 @@ class KafkaConsumerConfig {
         Flux<Post> response = postService.showUserNews(Mono.just(list).flatMapMany(Flux::fromIterable).skip(1));
         Long finalId = id;
         response.collectList().subscribe(s->{
-            kafkaMessageSender.send(s, finalId);
+            kafkaMessageSender.send(s, finalId, TOPIC_RESPONSE_NEWS);
         });
 
     }
@@ -116,6 +120,27 @@ class KafkaConsumerConfig {
         Mono<Post> mono = postService.update(Mono.just(message),message.getId());
 
         mono.subscribe(kafkaMessageSender::sendUpdate);
+    }
+
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_GET_AUTHOR_POST)
+    public void  getAuthorPosts(String msgAsString) {
+
+        msgAsString = msgAsString.replace(" ","");
+        Long id = 0L;
+        try {
+            id = Long.parseLong(objectMapper.readValue(msgAsString,String.class));
+
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
+        Flux<Post> response = postService.showByAuthorId(id).sort(Comparator.comparing(Post::getDate).reversed());
+        Long finalId = id;
+        response.collectList().subscribe(s->{
+            kafkaMessageSender.send(s,finalId, TOPIC_GET_AUTHOR_POST_RESPONSE);
+        });
+
     }
 
 

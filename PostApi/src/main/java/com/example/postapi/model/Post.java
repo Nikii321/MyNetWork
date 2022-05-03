@@ -1,8 +1,6 @@
 package com.example.postapi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.relational.core.mapping.Table;
 
 import javax.persistence.Column;
@@ -16,6 +14,8 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,8 +66,8 @@ public class Post {
                 case "path":
                     this.path = strings[1];
                     break;
-                case "data":
-                    this.date = Instant.ofEpochMilli(System.currentTimeMillis());;
+                case "date":
+                    this.date = Instant.parse(strings[1]);
                     break;
                 case "AuthorId":
                     this.authorId = Long.parseLong(strings[1]);
@@ -75,16 +75,8 @@ public class Post {
             }
         }
 
+
     }
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", path='" + path + '\'' +
-                ", authorName='" + authorName + '\'' +
-                ", authorId=" + authorId +
-                '}';
-    }
+
 }

@@ -19,19 +19,17 @@ public class SubscriptionsController {
     UserService userService;
 
     @GetMapping("/subscriptions/{username}")
-    public String showSubscription(@PathVariable String username, Model model, Model model2){
+    public String showSubscription(@PathVariable String username, Model model){
         User user = userService.findUserByUsername(username);
         model.addAttribute("Subscriptions",user.getSubscriptions());
         model.addAttribute("I", userService.findUserByUsername(userService.getCurrentUsername()));
-        System.out.println(user.getSubscriptions());
         return "SubcriptionsShow";
     }
     @GetMapping("/subscribers/{username}")
-    public String showSubscriber(@PathVariable String username, Model model, Model model2){
+    public String showSubscriber(@PathVariable String username, Model model){
         User user = userService.findUserByUsername(username);
         model.addAttribute("Subscriber",user.getSubscribers());
         model.addAttribute("I", userService.findUserByUsername(userService.getCurrentUsername()));
-
         return "SubscriberShow";
     }
 }

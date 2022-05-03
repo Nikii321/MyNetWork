@@ -18,14 +18,18 @@
     <table>
         <thead>
         <th>Name</th>
-        <th>Surname</th>
-        <th>subscribe</th>
+        <th>Subscriptions Count</th>
+        <th>Subscribe Count</th>
+        <th>is Subscribe</th>
+
         </thead>
         <c:forEach items="${Subscriptions}" var="user">
             <tr>
-                <td>${user.usDetails.nameUser}</td>
-                <td>${user.usDetails.surnameUser}</td>
+
                 <td><a href="http://localhost:8081/page/${user.username}">${user.username}</a></td>
+                <td>${user.subscribers.size()}</td>
+                <td>${user.subscriptions.size()}</td>
+                <td>${user.subscribers.contains(I)}</td>
 
 
             </tr>

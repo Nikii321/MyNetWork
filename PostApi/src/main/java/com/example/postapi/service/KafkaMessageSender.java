@@ -41,7 +41,7 @@ public class KafkaMessageSender implements MessageSender {
         kafkaTemplate.send(TOPIC_ADD_POST_RESPONSE, messageAsString);
     }
     @Override
-    public void send(List<Post> message, Long id) {
+    public void send(List<Post> message, Long id, String TOPIC_SOMETHING_RESPONSE) {
         log.info("send message:{}", message);
         String messageAsString =id+" ; ";
         for(int i=0;i<message.size();i++){
@@ -58,7 +58,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", message, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_RESPONSE_NEWS, messageAsString);
+        kafkaTemplate.send(TOPIC_SOMETHING_RESPONSE, messageAsString);
     }
     @Override
     public void send(Void unused) {

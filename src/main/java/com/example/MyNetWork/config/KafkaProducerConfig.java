@@ -14,14 +14,16 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    public static final String TOPIC_REQUESTS = "ADD_POST_REQUESTS";
-    public static final String TOPIC_REQUESTS_NEWS = "NEWS_SHOW_REQUESTS";
+
     public static final String TOPIC_REQUESTS_DETAILS_ADD = "ADD_DETAILS_REQUESTS";
     public static final String TOPIC_REQUESTS_DETAILS = "DETAILS_SHOW_REQUESTS";
 
-
+    public static final String TOPIC_REQUESTS = "ADD_POST_REQUESTS";
+    public static final String TOPIC_REQUESTS_NEWS = "NEWS_SHOW_REQUESTS";
     public static final String TOPIC_REQUESTS_POST_DELETE = "POST_DELETE_REQUESTS";
     public static final String TOPIC_REQUESTS_POST_UPDATE = "POST_UPDATE_REQUESTS";
+    public static final String TOPIC_REQUESTS_GET_AUTHOR_POST = "POST_GET_AUTHOR_REQUESTS";
+
 
 
     private String bootstrapAddress = "localhost:9092";
@@ -48,6 +50,9 @@ public class KafkaProducerConfig {
     }
     @Bean
     public NewTopic topicUpdatePost() { return new NewTopic("updatePost", 3, (short) 2);
+    }
+    @Bean
+    public NewTopic getAuthorPosts() { return new NewTopic("updatePost", 3, (short) 2);
     }
 
 

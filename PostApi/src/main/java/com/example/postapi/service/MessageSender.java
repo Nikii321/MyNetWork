@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MessageSender {
     public void send(Post post);
-    public void send(List<Post> message,Long id);
+    public void send(List<Post> message,Long id, String TOPIC_SOMETHING_RESPONSE);
     public void send(Void unused);
     public void sendUpdate(Post post);
 }

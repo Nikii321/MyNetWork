@@ -9,6 +9,7 @@ public class KafkaProducerConfig {
     public static final String TOPIC_RESPONSE_NEWS = "NEWS_SHOW_RESPONSE";
     public static final String TOPIC_DELETE_POST_RESPONSE = "DELETE_POST_RESPONSE";
     public static final String TOPIC_UPDATE_POST_RESPONSE = "UPDATE_SHOW_RESPONSE";
+    public static final String TOPIC_GET_AUTHOR_POST_RESPONSE = "POST_GET_AUTHOR_RESPONSE";
 
 
     @Bean
@@ -39,6 +40,14 @@ public class KafkaProducerConfig {
     public NewTopic topicUpdatePost() {
         return TopicBuilder
                 .name(TOPIC_UPDATE_POST_RESPONSE)
+                .partitions(3)
+                .replicas(2)
+                .build();
+    }
+    @Bean
+    public NewTopic topicGetPostResponse() {
+        return TopicBuilder
+                .name(TOPIC_GET_AUTHOR_POST_RESPONSE)
                 .partitions(3)
                 .replicas(2)
                 .build();
