@@ -13,5 +13,6 @@ public interface PostService {
     public Mono<Post> update(Mono<Post> newPost,Long id);
     public Mono<Void> delete(Long id);
     public Flux<Post> showUserNews(Flux<Long> authorId);
-
+    public Mono<Post> incrementPlus(Long postId);
+    public Mono<Post> incrementMinus(Long postId);
 }

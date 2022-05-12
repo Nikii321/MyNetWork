@@ -40,6 +40,8 @@ public class DetailsController {
             Details  usDetails = new Details();
             usDetails.setId(user.getId());
         }
+
+        System.out.println();
         model.addAttribute("UserDetails",details);
         model.addAttribute("I", userService.getCurrentUsername());
 
@@ -56,10 +58,8 @@ public class DetailsController {
         if(bindingResult.hasErrors()) {
             return "UserChangeInfo";
         }
-        User user = userService.findUserByUsername(userService.getCurrentUsername());
-
-        details.setId(user.getId());
-        kafkaMessageSender.send(details);
+        User user = userService.getCurrentUser();
+        detailsService.changeDetails(details,user);
 
 
         return "redirect:/page/"+user.getUsername();

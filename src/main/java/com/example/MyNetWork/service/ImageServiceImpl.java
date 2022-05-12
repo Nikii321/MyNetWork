@@ -32,6 +32,12 @@ public class ImageServiceImpl implements ImageService {
             return false;
         }
     }
+    public void delete(String name){
+        String realPath = path + "/" +name+".jpg";
+
+        File file = new File(realPath);
+        file.delete();
+    }
     public String upload(MultipartFile file){
         String str = randomString();
 

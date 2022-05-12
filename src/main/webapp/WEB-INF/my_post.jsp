@@ -28,7 +28,7 @@
     <div class="brd">
         <c:if test="${I.equals(username)}">
             <form method="post">
-                <input type="hidden" name="action" value="delete"/>
+                <input type="hidden" name="action" value="remove"/>
                 <input type="hidden" name="id" value="${post.id}"/>
                 <button type="submit" style="color: red">Delete</button>
             </form>
@@ -41,6 +41,26 @@
             <img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img">
         </c:if>
         <p>${post.text}</p>
+        <div style="margin-right: 70%">
+            <form method="post">
+                <c:if test="${!Like.contains(post.id)}">
+                    <input type="hidden" name="action" value="add"/>
+                    <input type="hidden" name="id" value="${post.id}"/>
+                    <p>
+                        <button style="color: #448AFF">Like</button>
+                    </p>
+                </c:if>
+                <c:if test="${Like.contains(post.id)}">
+                    <input type="hidden" name="action" value="delete"/>
+                    <input type="hidden" name="id" value="${post.id}"/>
+                    <p>
+                        <button style="color: #dddddd">Like</button>
+                    </p>
+                </c:if>
+            </form>
+            <p>${post.countLike}</p>
+        </div>
+
 
     </div>
 

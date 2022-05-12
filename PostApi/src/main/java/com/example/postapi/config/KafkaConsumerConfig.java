@@ -1,28 +1,24 @@
 package com.example.postapi.config;
 
+import com.example.postapi.model.Like;
 import com.example.postapi.model.Post;
-import com.example.postapi.repository.PostRepo;
 import com.example.postapi.service.KafkaMessageSender;
+import com.example.postapi.service.LikeService;
 import com.example.postapi.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.config.TopicBuilder;
-import org.springframework.kafka.core.KafkaTemplate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.example.postapi.config.KafkaProducerConfig.TOPIC_GET_AUTHOR_POST_RESPONSE;
-import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RESPONSE_NEWS;
+import static com.example.postapi.config.KafkaProducerConfig.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -32,14 +28,15 @@ class KafkaConsumerConfig {
     public static final String TOPIC_REQUESTS = "ADD_POST_REQUESTS";
     public static final String GROUP_ID = "postApi";
 
+
     private final ObjectMapper objectMapper;
-    public static final String TOPIC_REQUESTS_NEWS = "NEWS_SHOW_REQUESTS";
+    public static final String TOPIC_REQUESTS_NEWS_REQUESTS = "NEWS_SHOW_REQUESTS";
 
-    public static final String TOPIC_REQUESTS_POST_DELETE = "POST_DELETE_REQUESTS";
-    public static final String TOPIC_REQUESTS_POST_UPDATE = "POST_UPDATE_REQUESTS";
-    public static final String TOPIC_REQUESTS_GET_AUTHOR_POST = "POST_GET_AUTHOR_REQUESTS";
-
-
+    public static final String TOPIC_REQUESTS_POST_DELETE_REQUESTS = "POST_DELETE_REQUESTS";
+    public static final String TOPIC_REQUESTS_POST_UPDATE_REQUESTS = "POST_UPDATE_REQUESTS";
+    public static final String TOPIC_REQUESTS_GET_AUTHOR_POST_REQUESTS = "POST_GET_AUTHOR_REQUESTS";
+    public static final String TOPIC_ADD_OR_DELETE_LIKE_REQUESTS ="ADD_OR_DELETE_LIKE";
+    public static final String TOPIC_GET_USER_LIKES_RESPONSE ="TOPIC_GET_USER_LIKES_RESPONSE";
 
 
     @Autowired
@@ -48,6 +45,9 @@ class KafkaConsumerConfig {
     @Autowired
     private KafkaMessageSender kafkaMessageSender;
 
+    @Autowired
+    private LikeService likeService;
+
 
 
 
@@ -55,24 +55,28 @@ class KafkaConsumerConfig {
     public void  RequestListen(String msgAsString) {
         Post message = new Post();
         try {
-            message.takeData(objectMapper.readValue(msgAsString,String.class));
+            String str = (objectMapper.readValue(msgAsString,String.class));
+
+            message.takeData(str);
 
         } catch (Exception ex) {
             log.error("can't parse message:{}", msgAsString, ex);
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
-         Mono<Post> mono = postService.save(Mono.just(message));
-         mono.subscribe(kafkaMessageSender::send);
+
+
+        Mono<Post> mono = postService.save(Mono.just(message));
+        mono.subscribe(kafkaMessageSender::send);
     }
-    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_NEWS)
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_NEWS_REQUESTS)
     public void  ListNewsForUser(String msgAsString) {
         List<Long> list;
         msgAsString = msgAsString.replace(" ","");
         Long id = 0L;
         try {
             list= Arrays.stream(
-                    objectMapper.readValue(msgAsString,String.class)
-                            .toString().split(",")
+                            objectMapper.readValue(msgAsString,String.class)
+                                    .toString().split(",")
                     )
                     .mapToLong(Long::parseLong)
                     .boxed()
@@ -84,13 +88,19 @@ class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
         Flux<Post> response = postService.showUserNews(Mono.just(list).flatMapMany(Flux::fromIterable).skip(1));
+        Flux<Long> responseForLike = likeService.findAllByUserId(id);
+
         Long finalId = id;
+
         response.collectList().subscribe(s->{
             kafkaMessageSender.send(s, finalId, TOPIC_RESPONSE_NEWS);
         });
+        responseForLike.collectList().subscribe(s->{
+            kafkaMessageSender.sendForLike(s,finalId, TOPIC_GET_USER_LIKES_RESPONSE);
+        });
 
     }
-    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_POST_DELETE)
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_POST_DELETE_REQUESTS)
     public void  DeletePost(String msgAsString) {
         Long id = 0L;
         try {
@@ -106,7 +116,7 @@ class KafkaConsumerConfig {
 
     }
 
-    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_POST_UPDATE)
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_POST_UPDATE_REQUESTS)
     public void UpdatePost(String msgAsString) {
         Post message = new Post();
 
@@ -122,7 +132,7 @@ class KafkaConsumerConfig {
         mono.subscribe(kafkaMessageSender::sendUpdate);
     }
 
-    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_GET_AUTHOR_POST)
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_GET_AUTHOR_POST_REQUESTS)
     public void  getAuthorPosts(String msgAsString) {
 
         msgAsString = msgAsString.replace(" ","");
@@ -137,11 +147,49 @@ class KafkaConsumerConfig {
         }
         Flux<Post> response = postService.showByAuthorId(id).sort(Comparator.comparing(Post::getDate).reversed());
         Long finalId = id;
+        Flux<Long> responseForLike = likeService.findAllByUserId(id);
+
         response.collectList().subscribe(s->{
             kafkaMessageSender.send(s,finalId, TOPIC_GET_AUTHOR_POST_RESPONSE);
         });
+        responseForLike.collectList().subscribe(s->{
+            kafkaMessageSender.sendForLike(s,finalId, TOPIC_GET_USER_LIKES_RESPONSE);
+        });
+    }
+
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_ADD_OR_DELETE_LIKE_REQUESTS)
+    public void  addOrDeleteLike(String msgAsString){
+        String[] tmp;
+        try {
+            tmp = (objectMapper.readValue(msgAsString,String.class)).split(" ; ");
+
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
+        var userId =Long.parseLong(tmp[0]);
+        var postId =Long.parseLong(tmp[1]);
+        var action =(tmp[2]);
+        if(action.equals("add")){
+            Mono<Like> mono = likeService.saveLike(postId,userId);
+            Mono<Post> postMono = postService.incrementPlus(postId);
+            postMono.subscribe();
+            mono.subscribe();
+        }
+        else {
+            Mono<Void> mono  = likeService.deleteLike(postId,userId);
+            Mono<Post> postMono = postService.incrementMinus(postId);
+            Mono<Like> likeMono = mono.flatMap(s->{
+                return likeService.findByPostIdAndIdUser(postId,userId);});
+            postMono.subscribe();
+            likeMono.subscribe(System.out::println);
+        }
 
     }
+
+
+
 
 
 

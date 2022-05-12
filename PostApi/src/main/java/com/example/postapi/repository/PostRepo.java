@@ -1,3 +1,4 @@
+
 package com.example.postapi.repository;
 
 import com.example.postapi.model.Post;

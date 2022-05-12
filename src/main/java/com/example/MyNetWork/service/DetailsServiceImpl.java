@@ -29,19 +29,24 @@ public class DetailsServiceImpl implements DetailsService{
 
     public Details getDetails(Long id) throws InterruptedException {
 
-        Details details = detailsHashMap.get(id);
-        Details newDetails = null;
+        Details newDetails =detailsHashMap.get(id);
 
         int i=0;
         var data =  System.currentTimeMillis();
-        while (newDetails == null || newDetails.equals(details) ) {
+        while (newDetails == null) {
 
             newDetails = detailsHashMap.get(id);
-            if(System.currentTimeMillis()-data>=5000){
-                return details;
+            if(System.currentTimeMillis()-data>=1000){
+                break;
             }
         }
         return newDetails;
+    }
+    public void changeDetails(Details details,User user){
+        detailsHashMap.put(user.getId(),null);
+
+        details.setId(user.getId());
+        kafkaMessageSender.send(details);
     }
 
     public void sendKafkaListId() {

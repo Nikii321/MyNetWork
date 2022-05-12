@@ -2,20 +2,18 @@ package com.example.MyNetWork.config;
 
 import com.example.MyNetWork.service.DetailsService;
 import com.example.MyNetWork.service.PostService;
-import com.example.MyNetWork.service.UserService;
 import com.example.detailsapi.model.Details;
 import com.example.postapi.model.Post;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -32,6 +30,8 @@ public class KafkaConsumerConfig {
     public static final String TOPIC_DELETE_POST_RESPONSE = "DELETE_POST_RESPONSE";
     public static final String TOPIC_UPDATE_POST_RESPONSE = "UPDATE_SHOW_RESPONSE";
     public static final String TOPIC_GET_AUTHOR_POST_RESPONSE = "POST_GET_AUTHOR_RESPONSE";
+    public static final String TOPIC_GET_USER_LIKES_RESPONSE ="TOPIC_GET_USER_LIKES_RESPONSE";
+
 
 
     public static final String GROUP_ID_POST = "postApi";
@@ -64,10 +64,14 @@ public class KafkaConsumerConfig {
         try {
             data = objectMapper.readValue(msgAsString,String.class).split(" ; ");
 
+
+
         } catch (Exception ex) {
             log.error("can't parse message:{}", msgAsString, ex);
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
+
+
         List<Post> list = new ArrayList<>();
         Long id =0L;
         for (String tmp :data){
@@ -75,10 +79,13 @@ public class KafkaConsumerConfig {
                 id = Long.parseLong(tmp);
                 continue;
             }
+
             Post post = new Post();
             post.takeData(tmp);
             list.add(post);
+
         }
+
         postService.addListHashMap(id,list);
 
     }
@@ -157,5 +164,34 @@ public class KafkaConsumerConfig {
         postService.addUsersPostsHashMap(id,list);
 
     }
+
+
+
+    @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_GET_USER_LIKES_RESPONSE)
+    public void getLikes(String msgAsString) {
+        String[] data;
+        try {
+            data = objectMapper.readValue(msgAsString,String.class).split(" ; ");
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
+
+        System.out.println(1);
+        System.out.println(Arrays.toString(data));
+        List<Long> list = new ArrayList<>();
+        Long id = Long.parseLong(data[0]);
+        System.out.println(2);
+        for(int i = 1;i<data.length;i++){
+            list.add(Long.parseLong(data[i]));
+        }
+        postService.addLikePosts(id,list);
+        System.out.println(list);
+
+    }
+
+
+
 
 }

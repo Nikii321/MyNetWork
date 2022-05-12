@@ -7,7 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Date;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 
 @Table("post")
@@ -28,7 +32,15 @@ public class Post {
 
     private Long authorId;
     private Instant date;
+    private Long countLike;
+    private  final String PATTERN_FORMAT = "HH:mm dd.MM.yyyy";
 
+    public void incrementPlus(){
+        countLike = countLike==null?1:countLike+1;
+    }
+    public void incrementMinus(){
+        countLike = (countLike==null||countLike<0)?0:countLike-1;
+    }
 
     public Post(String text, String path, String authorName, Long authorId) {
         this.text = text;
@@ -38,23 +50,32 @@ public class Post {
         this.date =  Instant.ofEpochMilli(System.currentTimeMillis());
     }
     public String PostToString(){
+
         String result = "";
-        result += "id:"+id+",";
-        result+= "AuthorName:"+authorName+",";
-        result+="text:"+text+",";
-        result += "AuthorId:"+authorId+",";
-        result+="path:"+path+",";
-        result+="data:"+date+",";
+        result += "id="+id+",";
+        result+= "AuthorName="+authorName+",";
+        result+="text="+text+",";
+        result += "AuthorId="+authorId+",";
+        result+="path="+path+",";
+        result+="date="+date+",";
+        result+= "countLike="+countLike;
+        System.out.println(result);
+
         return result;
     }
     public void takeData(String massage){
         String[] str=massage.split(",");
 
+
         for(String tmp:str){
-            String[] strings = tmp.split(":");
+
+
+
+            String[] strings = tmp.split("=");
             switch (strings[0]){
                 case "id":
                     this.id = (strings[1].equals("null"))?null:Long.parseLong(strings[1]);
+
                     break;
                 case "AuthorName":
                     this.authorName = strings[1];
@@ -67,16 +88,29 @@ public class Post {
                     this.path = strings[1];
                     break;
                 case "date":
-                    this.date = Instant.parse(strings[1]);
+
+
+                    this.date = Instant.parse((strings[1]));
+
+
                     break;
                 case "AuthorId":
+
                     this.authorId = Long.parseLong(strings[1]);
+                    break;
+                case "countLike":
+                    this.countLike =(strings[1].equals("null"))?null:Long.parseLong(strings[1]);
+
                     break;
             }
         }
-
-
     }
 
+    public String dateFormat(){
+        date = Instant.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN_FORMAT)
+                .withZone(ZoneId.systemDefault());
+        return formatter.format(date);
+    }
 
 }

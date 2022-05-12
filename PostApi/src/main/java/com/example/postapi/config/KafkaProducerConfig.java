@@ -10,6 +10,7 @@ public class KafkaProducerConfig {
     public static final String TOPIC_DELETE_POST_RESPONSE = "DELETE_POST_RESPONSE";
     public static final String TOPIC_UPDATE_POST_RESPONSE = "UPDATE_SHOW_RESPONSE";
     public static final String TOPIC_GET_AUTHOR_POST_RESPONSE = "POST_GET_AUTHOR_RESPONSE";
+    public static final String TOPIC_POSTS_LIKE_FOR_USER = "POSTS_LIKE_FOR_USER";
 
 
     @Bean
@@ -52,4 +53,15 @@ public class KafkaProducerConfig {
                 .replicas(2)
                 .build();
     }
+    @Bean
+    public NewTopic topicPostsLikeForUser() {
+        return TopicBuilder
+                .name(TOPIC_POSTS_LIKE_FOR_USER)
+                .partitions(3)
+                .replicas(2)
+                .build();
+    }
+
+
+
 }

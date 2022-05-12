@@ -10,7 +10,7 @@ public interface MessageSender {
     public void send(Set<Long>  SubscriberId, Long id);
     public void send(Long id);
     public void send(Details details);
-    public void sendUpdatePostRequest(Post message);
+    public void  sendAddOrDeleteLike(Long postId, Long userId, String action);
     public void sendDeletePostRequest(Long id);
     public void sendGetAuthorPosts(Long id);
 }

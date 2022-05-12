@@ -30,6 +30,7 @@ public class PageController {
         User user= userService.findUserByUsername(username);
 
         Details details= detailsService.getDetails(user.getId());
+
         model.addAttribute("UserDetails", details);
         model.addAttribute("SubscribersCount", user.getSubscribers().size());
         model.addAttribute("SubscriptionsCount", user.getSubscriptions().size());

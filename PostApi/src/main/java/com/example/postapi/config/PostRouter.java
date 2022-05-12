@@ -50,12 +50,7 @@ public class PostRouter {
                         postHandlers::showAllByAuthorId);
     }
 
-    @Bean
-    public RouterFunction<ServerResponse> routerFunctionPostUpdatePost(PostHandlers postHandlers){
-        return RouterFunctions
-                .route(RequestPredicates.PATCH("/post").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
-                        postHandlers::updatePost);
-    }
+
     @Bean
     public RouterFunction<ServerResponse> routerFunctionDeletePost(PostHandlers postHandlers){
         return RouterFunctions

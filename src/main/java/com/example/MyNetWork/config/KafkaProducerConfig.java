@@ -17,6 +17,8 @@ public class KafkaProducerConfig {
 
     public static final String TOPIC_REQUESTS_DETAILS_ADD = "ADD_DETAILS_REQUESTS";
     public static final String TOPIC_REQUESTS_DETAILS = "DETAILS_SHOW_REQUESTS";
+    public static final String TOPIC_GET_USER_LIKES_REQUESTS ="ADD_OR_DELETE_LIKE";
+
 
     public static final String TOPIC_REQUESTS = "ADD_POST_REQUESTS";
     public static final String TOPIC_REQUESTS_NEWS = "NEWS_SHOW_REQUESTS";
@@ -52,7 +54,11 @@ public class KafkaProducerConfig {
     public NewTopic topicUpdatePost() { return new NewTopic("updatePost", 3, (short) 2);
     }
     @Bean
-    public NewTopic getAuthorPosts() { return new NewTopic("updatePost", 3, (short) 2);
+    public NewTopic topicGetAuthorPosts() { return new NewTopic("updatePost", 3, (short) 2);
+    }
+
+    @Bean
+    public NewTopic topicAddOrLike() { return new NewTopic("addOrLike", 1, (short) 1);
     }
 
 

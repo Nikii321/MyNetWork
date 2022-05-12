@@ -44,6 +44,7 @@ public class KafkaMessageSender implements MessageSender {
     public void send(List<Post> message, Long id, String TOPIC_SOMETHING_RESPONSE) {
         log.info("send message:{}", message);
         String messageAsString =id+" ; ";
+        String messageAsStringForLike =id+" ; ";
         for(int i=0;i<message.size();i++){
 
             messageAsString += message.get(i).PostToString();
@@ -51,7 +52,29 @@ public class KafkaMessageSender implements MessageSender {
                 messageAsString+=" ; ";
             }
         }
-        System.out.println(messageAsString);
+
+        try {
+            messageAsString = objectMapper.writeValueAsString(messageAsString);
+        } catch (JsonProcessingException ex) {
+            log.error("can't serialize message:{}", message, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_SOMETHING_RESPONSE, messageAsString);
+    }
+
+    public void sendForLike(List<Long> message, Long id, String TOPIC_SOMETHING_RESPONSE) {
+        log.info("send message:{}", message);
+        System.out.println(message);
+        String messageAsString =id+" ; ";
+        String messageAsStringForLike =id+" ; ";
+        for(int i=0;i<message.size();i++){
+
+            messageAsString += message.get(i);
+            if(i!= message.size()-1){
+                messageAsString+=" ; ";
+            }
+        }
+
         try {
             messageAsString = objectMapper.writeValueAsString(messageAsString);
         } catch (JsonProcessingException ex) {
@@ -84,6 +107,9 @@ public class KafkaMessageSender implements MessageSender {
         }
         kafkaTemplate.send(TOPIC_UPDATE_POST_RESPONSE, messageAsString);
     }
+
+
+
 
 
 }

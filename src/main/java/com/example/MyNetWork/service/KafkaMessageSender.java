@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+
 import java.util.Set;
 
 import static com.example.MyNetWork.config.KafkaProducerConfig.*;
@@ -87,18 +87,7 @@ public class KafkaMessageSender implements MessageSender {
         }
         kafkaTemplate.send(TOPIC_REQUESTS_POST_DELETE, messageAsString);
     }
-    @Override
-    public void sendUpdatePostRequest(Post message) {
-        log.info("send post for add message:{}", message);
-        String messageAsString = message.PostToString();
-        try {
-            messageAsString = objectMapper.writeValueAsString(messageAsString);
-        } catch (JsonProcessingException ex) {
-            log.error("can't serialize message:{}", message, ex);
-            throw new RuntimeException();
-        }
-        kafkaTemplate.send(TOPIC_REQUESTS_POST_UPDATE, messageAsString);
-    }
+
     @Override
     public void sendGetAuthorPosts(Long id){
         String message = String.valueOf(id);
@@ -111,6 +100,18 @@ public class KafkaMessageSender implements MessageSender {
             throw new RuntimeException();
         }
         kafkaTemplate.send(TOPIC_REQUESTS_GET_AUTHOR_POST, message);
+    }
+    public void  sendAddOrDeleteLike(Long postId, Long userId, String action){
+        String message = userId+ " ; " + postId+" ; "+action;
+        log.info("{} from {} to {}",action,userId, postId);
+        try {
+            message = objectMapper.writeValueAsString(message);
+        }
+        catch (JsonProcessingException ex){
+            log.error("can't serialize message:{}", message, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(TOPIC_GET_USER_LIKES_REQUESTS, message);
     }
 
 

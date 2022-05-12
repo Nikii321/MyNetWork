@@ -1,7 +1,10 @@
 package com.example.postapi.handlers;
 
 
+import com.example.postapi.model.Like;
 import com.example.postapi.model.Post;
+import com.example.postapi.repository.LikeRepo;
+import com.example.postapi.service.LikeService;
 import com.example.postapi.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,11 @@ import reactor.core.publisher.Mono;
 public class PostHandlers {
     @Autowired
     private PostService postService;
+
     public Mono<ServerResponse> showAll(ServerRequest request) {
+
+
+
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -30,7 +37,7 @@ public class PostHandlers {
         Long id = request.queryParam("id").map(Long::valueOf).orElse(null);
         if(id == null)return ServerResponse.
                 badRequest()
-                .varyBy("Not corrext id").build();
+                .varyBy("Not correct id").build();
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -67,18 +74,7 @@ public class PostHandlers {
 
         return serverResponse;
     }
-    public Mono<ServerResponse> updatePost(ServerRequest serverRequest) {
-        Mono<Post> newPost = serverRequest.bodyToMono(Post.class);
-        Long id = serverRequest.queryParam("id").map(Long::valueOf).orElse(null);
-        if(id == null)return ServerResponse.
-                badRequest()
-                .varyBy("Not found id").build();
 
-        return ServerResponse
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(postService.update(newPost, id), Post.class);
-    }
     public Mono<ServerResponse> deletePost(ServerRequest serverRequest) {
 
         Long id = serverRequest.queryParam("id").map(Long::valueOf).orElse(null);

@@ -62,12 +62,13 @@
     <c:if test="${username.equals(I)}">
 
         <botton><a href="/change"> Change</a></botton>
-    <botton><a href="/post/${username}">Posts</a></botton>
 
         <p/>
 
         <a href="/fileUpload">Upload Image </a>
     </c:if>
+    <p><a href="/post/${username}">Posts</a></p>
+
     <p/>
     <p/>
 

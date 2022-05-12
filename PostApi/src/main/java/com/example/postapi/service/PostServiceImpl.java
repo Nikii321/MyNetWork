@@ -17,9 +17,24 @@ public class PostServiceImpl implements PostService{
     @Autowired
     private PostRepo postRepo;
 
+
     public Flux<Post> showAll(){
         log.info("Start show");
         return postRepo.findAll();
+    }
+    public Mono<Post> incrementPlus(Long postId){
+        return postRepo.findById(postId).map(s->{
+            s.incrementPlus();
+            return s;
+        }).flatMap(postRepo::save);
+
+    }
+    public Mono<Post> incrementMinus(Long postId){
+        return postRepo.findById(postId).map(s->{
+            s.incrementMinus();
+            return s;
+        }).flatMap(postRepo::save);
+
     }
     public Mono<Post> showByID(Long id){
 

@@ -17,15 +17,36 @@
 </head>
 <body>
 <div>
-    <p>${Error}</p>
     <c:forEach items="${NewPost}" var="post">
 
         <div class="brd">
-            <a class=".titl" href="http://localhost:8081/page/${post.authorName}"><p>${post.authorName}</p></a>
+            <p><a class=".titl" href="http://localhost:8081/page/${post.authorName}" >${post.authorName}</a><h4
+                    style="margin-left: 80%">${post.dateFormat()}</h4></p>
             <c:if test="${post.path!=null}">
-                <p><img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img"></p>
+                <div><p><img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img"></p></div>
             </c:if>
+
             <p>${post.text}</p>
+            <div style="margin-right: 70%">
+                <form method="post">
+                    <c:if test="${!Like.contains(post.id)}">
+                        <input type="hidden" name="action" value="add"/>
+                        <input type="hidden" name="id" value="${post.id}"/>
+                        <p>
+                            <button style="color: #448AFF">Like</button>
+                        </p>
+                    </c:if>
+                    <c:if test="${Like.contains(post.id)}">
+                        <input type="hidden" name="action" value="delete"/>
+                        <input type="hidden" name="id" value="${post.id}"/>
+                        <p>
+                            <button style="color: #dddddd">Like</button>
+                        </p>
+                    </c:if>
+                </form>
+                <p>${post.countLike}</p>
+            </div>
+
 
         </div>
 
