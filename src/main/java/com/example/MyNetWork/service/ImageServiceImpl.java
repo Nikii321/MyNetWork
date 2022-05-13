@@ -1,10 +1,13 @@
 package com.example.MyNetWork.service;
+import com.example.postapi.model.Post;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -37,6 +40,13 @@ public class ImageServiceImpl implements ImageService {
 
         File file = new File(realPath);
         file.delete();
+    }
+    public void delete(List<Post> posts,Long postId){
+        delete(posts.parallelStream().
+                filter(s->s.getId()==(postId)).
+                collect(Collectors.toList()).get(0).getPath());
+        posts.remove(postId);
+
     }
     public String upload(MultipartFile file){
         String str = randomString();

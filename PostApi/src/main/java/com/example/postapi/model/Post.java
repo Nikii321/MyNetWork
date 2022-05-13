@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Locale;
 
 
 @Table("post")
@@ -33,7 +34,6 @@ public class Post {
     private Long authorId;
     private Instant date;
     private Long countLike;
-    private  final String PATTERN_FORMAT = "HH:mm dd.MM.yyyy";
 
     public void incrementPlus(){
         countLike = countLike==null?1:countLike+1;
@@ -108,7 +108,7 @@ public class Post {
 
     public String dateFormat(){
         date = Instant.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN_FORMAT)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy").localizedBy(Locale.ENGLISH)
                 .withZone(ZoneId.systemDefault());
         return formatter.format(date);
     }
