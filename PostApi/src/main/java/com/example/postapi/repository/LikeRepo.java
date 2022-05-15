@@ -23,14 +23,12 @@ public interface LikeRepo extends ReactiveCrudRepository<Like,Long> {
     @Query("SELECT * FROM public.like;")
     Flux<Like> findAll();
     @Async
-    @Query("INSERT INTO public.like(id,user_id, post_id) VALUES (:id, :userId, :postId);")
-    Mono<Like> save(Long id,Long postId,Long userId);
+    @Query("INSERT INTO public.like(user_id, post_id) VALUES (:userId, :postId);")
+    Mono<Like> save(Long postId,Long userId);
     @Async
     @Query("DELETE FROM public.like WHERE post_id = :postId and user_id = :userId;")
     Mono<Void> deleteByPostIdAndAndIdUser(Long postId,Long userId);
-    @Async
-    @Query("SELECT max(id) FROM public.like")
-    Long getMaxId();
+
 
 
 }

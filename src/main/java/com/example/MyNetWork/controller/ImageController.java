@@ -26,13 +26,14 @@ public class ImageController {
     @PostMapping("/fileUpload")
     public String upload(@ModelAttribute("File") MultipartFile file, Model model){
         String localPath="/Users/nikolajvereschagin/Desktop/MyNetWork/src/main/webapp/resources/image";
-
         String warning="";
         if(imageService.upload(file, localPath, userService.getCurrentUsername())){
             warning="Download completed successfully";
 
         }else{
             warning="Download failed";
+            model.addAttribute("Exeption");
+            return "fileLouder";
         }
         model.addAttribute("Name",userService.getCurrentUsername());
 

@@ -12,7 +12,6 @@ public class LikeServiceImpl implements LikeService{
     @Autowired
     private LikeRepo likeRepo;
 
-    private static Long id =10L;
 
 
     public Mono<Like> findByPostIdAndIdUser(Long postId, Long userId){
@@ -20,7 +19,7 @@ public class LikeServiceImpl implements LikeService{
     }
 
     public Mono<Like> saveLike(Long postId,Long userId){
-        return likeRepo.save(id++,postId,userId);
+        return likeRepo.save(postId,userId);
     }
     public Mono<Void> deleteLike(Long postId, Long userId){
         return likeRepo.deleteByPostIdAndAndIdUser(postId,userId);

@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
     private  HashMap<Long, List<Long>> likeHashMap= new HashMap<>();
 
 
-
+    //<------------------------------------- Add in HashMap (Start) ------------------------------------->
     @Override
     public void addListHashMap( Long id, List<Post> list) {
 
@@ -36,11 +36,23 @@ public class PostServiceImpl implements PostService {
     public void addUsersPostsHashMap( Long id, List<Post> list) {
         usersPostsHashMap.put(id,list);
     }
+
+    public void addLikePosts(Long id, List<Long> list){
+        likeHashMap.put(id,list);
+    }
+    //<------------------------------------- Add in HashMap (Finish) ------------------------------------->
+
+
+
     @Override
     public void  sendNewPost(Post post){
         usersPostsHashMap.put(post.getAuthorId(),null);
         kafkaMessageSender.send(post);
     }
+
+
+    //<------------------------------------- Post and Like (Start) ------------------------------------->
+
 
     private CompletableFuture<List<Long>> getFutureLike(Long userId){
         return CompletableFuture.supplyAsync(()->this.getUsersLikes(userId));
@@ -84,56 +96,6 @@ public class PostServiceImpl implements PostService {
         }
         return posts;
     }
-    public void addOrRemoveLike(Long postId,Long userId,String action,Long authorId){
-        List<Post> posts = listHashMap.get(userId);
-        List<Long> like = likeHashMap.get(userId);
-        if(action.equals("add") && !likeHashMap.get(userId).contains(postId)){
-           addLike(posts,like,postId,authorId,userId);
-        }
-        else if(action.equals("delete") && likeHashMap.get(userId).contains(postId)) {
-            deleteLike(posts,like,postId,authorId,userId);
-        }
-        kafkaMessageSender.sendAddOrDeleteLike(postId, userId,action);
-        addLikePosts(userId,like);
-        if(authorId==null) {
-            addListHashMap(userId, posts);
-        }
-        else {
-            addUsersPostsHashMap(authorId,posts);
-        }
-    }
-
-    private void changeAddListHashMap(Long userId, List<Post> posts, Long authorId){
-        if(authorId==null) {
-            addListHashMap(userId, posts);
-        }
-        else {
-            addUsersPostsHashMap(authorId,posts);
-        }
-    }
-    private void addLike(List<Post> posts, List<Long> like, Long postId, Long authorId,Long userId){
-        posts = posts.parallelStream().peek(s->{
-            if(Objects.equals(s.getId(), postId)){
-                s.incrementPlus();
-            }
-        }).collect(Collectors.toList());
-        like.add(postId);
-        changeAddListHashMap(userId, posts,authorId);
-
-    }
-    private void deleteLike(List<Post> posts, List<Long> like, Long postId, Long authorId,Long userId){
-        posts = posts.parallelStream().peek(s->{
-            if(Objects.equals(s.getId(), postId)){
-                s.incrementMinus();
-            }
-        }).collect(Collectors.toList());
-        like.remove(postId);
-        changeAddListHashMap(userId, posts,authorId);
-    }
-    private List<Post> getAuthorPost(Long id){
-
-        return getPosts(usersPostsHashMap,id);
-    }
     private List<Long> getUsersLikes(Long id){
 
         List<Long> like = likeHashMap.get(id);
@@ -149,19 +111,80 @@ public class PostServiceImpl implements PostService {
 
         return like;
     }
+    //<------------------------------------- Post and Like (Finished) ------------------------------------->
 
 
+    //<------------------------------------- Add in Like (Start) ------------------------------------->
 
 
+    public void addOrRemoveLike(Long postId,Long userId,String action,Long authorId){
+        List<Post> posts;
+        if(authorId==null) {
+            posts = listHashMap.get(userId);
+        }
+        else {
+            posts = usersPostsHashMap.get(userId);
+        }
 
+        List<Long> like = likeHashMap.get(userId);
+        if(action.equals("add") && !likeHashMap.get(userId).contains(postId)){
+           posts = addLike(posts,like,postId);
+        }
+        else if(action.equals("delete") && likeHashMap.get(userId).contains(postId)) {
+            posts = deleteLike(posts,like,postId);
+        }
+        kafkaMessageSender.sendAddOrDeleteLike(postId, userId,action);
+        addLikePosts(userId,like);
+        if(authorId==null) {
+            addListHashMap(userId, posts);
+        }
+        else {
+            addUsersPostsHashMap(authorId,posts);
+        }
+    }
+
+
+    private List<Post> addLike(List<Post> posts, List<Long> like, Long postId){
+        posts = posts.parallelStream().peek(s->{
+            if(Objects.equals(s.getId(), postId)){
+                s.incrementPlus();
+            }
+        }).collect(Collectors.toList());
+        like.add(postId);
+        return posts;
+
+    }
+    private List<Post> deleteLike(List<Post> posts, List<Long> like, Long postId){
+        posts = posts.parallelStream().peek(s->{
+            if(Objects.equals(s.getId(), postId)){
+                s.incrementMinus();
+            }
+        }).collect(Collectors.toList());
+        like.remove(postId);
+        return posts;
+    }
+    //<------------------------------------- Add in Like (Finish) ------------------------------------->
+
+    private List<Post> getAuthorPost(Long id){
+
+        return getPosts(usersPostsHashMap,id);
+    }
 
     public List<Post> delete(Long id, Long postId){
         kafkaMessageSender.sendDeletePostRequest(postId);
         List<Post> posts = usersPostsHashMap.get(id);
         imageService.delete(posts, postId);
-        usersPostsHashMap.put(id, posts);
+
+        usersPostsHashMap.put(id, deletePostById(posts,postId));
 
         return usersPostsHashMap.get(id);
+    }
+    private Post getPostById(List<Post> posts,Long postId){
+        return  posts.parallelStream().filter(s->s.getId()==postId).collect(Collectors.toList()).get(0);
+    }
+    private List<Post> deletePostById(List<Post> posts,Long postId){
+        posts.remove(getPostById(posts,postId));
+        return posts;
     }
 
     @Override
@@ -171,14 +194,5 @@ public class PostServiceImpl implements PostService {
         kafkaMessageSender.send(idList, user.getId());
 
     }
-
-    public void addLikePosts(Long id, List<Long> list){
-        likeHashMap.put(id,list);
-    }
-
-
-
-
-
 
 }

@@ -90,7 +90,7 @@ public class Post {
                 case "date":
 
 
-                    this.date = Instant.parse((strings[1]));
+                    this.date = (strings[1].equals("null"))?null:Instant.parse((strings[1]));
 
 
                     break;
@@ -107,8 +107,7 @@ public class Post {
     }
 
     public String dateFormat(){
-        date = Instant.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy").localizedBy(Locale.ENGLISH)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm dd MMMM yyyy").localizedBy(Locale.ENGLISH)
                 .withZone(ZoneId.systemDefault());
         return formatter.format(date);
     }

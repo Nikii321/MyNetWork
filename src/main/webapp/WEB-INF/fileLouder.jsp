@@ -12,16 +12,18 @@
   <style>
     body{
       background-image: url("${pageContext.request.contextPath}/resources/image/defoult.jpg");
-      background-color: #f1f1f1;
+      color: #f1f1f1;
     }
   </style>
 </head>
 <body>
+<h4 style="color: red">${message}</h4>
 <form action="${Name}" method="post" enctype="multipart/form-data">
   <p>Choose file:<input type="file" name="file" /></p>
   <p><input type="submit"  value=«Send»/></p>
-  <a href="/page/${Name}"> Comeback </a>
+  <a href="/"> Comeback </a>
 </form>
+
 
 </body>
 </html>
