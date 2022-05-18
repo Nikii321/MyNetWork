@@ -27,7 +27,7 @@ public class KafkaMessageSender implements MessageSender {
     @Override
     public void send(Post message) {
         log.info("send post for add message:{}", message);
-        String messageAsString = message.PostToString();
+        String messageAsString = message.customToString();
         try {
             messageAsString = objectMapper.writeValueAsString(messageAsString);
         } catch (JsonProcessingException ex) {

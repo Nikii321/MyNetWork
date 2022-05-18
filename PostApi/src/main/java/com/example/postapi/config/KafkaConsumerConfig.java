@@ -1,7 +1,9 @@
 package com.example.postapi.config;
 
+import com.example.postapi.model.Comment;
 import com.example.postapi.model.Like;
 import com.example.postapi.model.Post;
+import com.example.postapi.service.CommentService;
 import com.example.postapi.service.KafkaMessageSender;
 import com.example.postapi.service.LikeService;
 import com.example.postapi.service.PostService;
@@ -31,17 +33,17 @@ class KafkaConsumerConfig {
 
     private final ObjectMapper objectMapper;
     public static final String TOPIC_REQUESTS_NEWS_REQUESTS = "NEWS_SHOW_REQUESTS";
-
     public static final String TOPIC_REQUESTS_POST_DELETE_REQUESTS = "POST_DELETE_REQUESTS";
     public static final String TOPIC_REQUESTS_POST_UPDATE_REQUESTS = "POST_UPDATE_REQUESTS";
     public static final String TOPIC_REQUESTS_GET_AUTHOR_POST_REQUESTS = "POST_GET_AUTHOR_REQUESTS";
     public static final String TOPIC_ADD_OR_DELETE_LIKE_REQUESTS ="ADD_OR_DELETE_LIKE";
-    public static final String TOPIC_GET_USER_LIKES_RESPONSE ="TOPIC_GET_USER_LIKES_RESPONSE";
+    public static final String TOPIC_ADD_COMMENT_REQUESTS = "TOPIC_ADD_COMMENT_REQUESTS";
 
 
     @Autowired
     private PostService postService;
-
+    @Autowired
+    private CommentService commentService;
     @Autowired
     private KafkaMessageSender kafkaMessageSender;
 
@@ -57,7 +59,7 @@ class KafkaConsumerConfig {
         try {
             String str = (objectMapper.readValue(msgAsString,String.class));
 
-            message.takeData(str);
+            message.convertData(str);
 
         } catch (Exception ex) {
             log.error("can't parse message:{}", msgAsString, ex);
@@ -87,19 +89,27 @@ class KafkaConsumerConfig {
             log.error("can't parse message:{}", msgAsString, ex);
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
-        Flux<Post> response = postService.showUserNews(Mono.just(list).flatMapMany(Flux::fromIterable).skip(1));
+        Flux<Post> response = postService.showUserNews(Mono.just(list).flatMapMany(Flux::fromIterable).skip(1)).switchIfEmpty(postService.getPopularPosts(id));
         Flux<Long> responseForLike = likeService.findAllByUserId(id);
 
         Long finalId = id;
 
+
+
         response.collectList().subscribe(s->{
             kafkaMessageSender.send(s, finalId, TOPIC_RESPONSE_NEWS);
+        });
+        Flux<Comment> responseForComment = response.map(Post::getId).collectList().flatMapMany(s->commentService.findAllByManyPosts(s));
+        responseForComment.collectList().subscribe(s->{
+            kafkaMessageSender.send(s, finalId, TOPIC_GET_COMMENT_RESPONSE);
         });
         responseForLike.collectList().subscribe(s->{
             kafkaMessageSender.sendForLike(s,finalId, TOPIC_GET_USER_LIKES_RESPONSE);
         });
 
+
     }
+
     @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_POST_DELETE_REQUESTS)
     public void  DeletePost(String msgAsString) {
         Long id = 0L;
@@ -121,7 +131,7 @@ class KafkaConsumerConfig {
         Post message = new Post();
 
         try {
-            message.takeData(objectMapper.readValue(msgAsString,String.class));
+            message.convertData(objectMapper.readValue(msgAsString,String.class));
 
         } catch (Exception ex) {
             log.error("can't parse message:{}", msgAsString, ex);
@@ -149,10 +159,15 @@ class KafkaConsumerConfig {
         Long finalId = id;
         Flux<Long> responseForLike = likeService.findAllByUserId(id);
 
+
+
         response.collectList().subscribe(s->{
             kafkaMessageSender.send(s,finalId, TOPIC_GET_AUTHOR_POST_RESPONSE);
         });
-        responseForLike.collectList().subscribe(s->{
+        Flux<Comment> responseForComment = response.map(Post::getId).collectList().flatMapMany(s->commentService.findAllByManyPosts(s));
+        responseForComment.collectList().subscribe(s->{
+            kafkaMessageSender.send(s, finalId, TOPIC_GET_COMMENT_RESPONSE);
+        });        responseForLike.collectList().subscribe(s->{
             kafkaMessageSender.sendForLike(s,finalId, TOPIC_GET_USER_LIKES_RESPONSE);
         });
     }
@@ -183,14 +198,43 @@ class KafkaConsumerConfig {
             Mono<Like> likeMono = mono.flatMap(s->{
                 return likeService.findByPostIdAndIdUser(postId,userId);});
             postMono.subscribe();
-            likeMono.subscribe(System.out::println);
+            likeMono.subscribe();
+        }
+    }
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_ADD_COMMENT_REQUESTS)
+    public void AddComment(String msgAsString){
+        Comment message = new Comment();
+        try {
+            String str = (objectMapper.readValue(msgAsString,String.class));
+
+            message.convertData(str);
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
 
+
+        Mono<Comment> mono = commentService.saveComment(message.getPostId(),message.getUserId(),message.getText());
+        mono.subscribe();
     }
 
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_ADD_COMMENT_REQUESTS)
+    public void deleteCommit(String msgAsString){
+        Comment message = new Comment();
+        try {
+            String str = (objectMapper.readValue(msgAsString,String.class));
+
+            message.convertData(str);
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
 
 
-
-
+        Mono<Void> mono = commentService.deleteComment(message.getPostId(),message.getUserId(),message.getText());
+        mono.subscribe();
+    }
 
 }

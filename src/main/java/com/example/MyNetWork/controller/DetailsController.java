@@ -37,7 +37,7 @@ public class DetailsController {
             Details  usDetails = new Details();
             usDetails.setId(user.getId());
         }
-        System.out.println();
+
         model.addAttribute("UserDetails",details);
         model.addAttribute("I", userService.getCurrentUsername());
         return "UserChangeInfo";

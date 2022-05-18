@@ -11,6 +11,11 @@ public class KafkaProducerConfig {
     public static final String TOPIC_UPDATE_POST_RESPONSE = "UPDATE_SHOW_RESPONSE";
     public static final String TOPIC_GET_AUTHOR_POST_RESPONSE = "POST_GET_AUTHOR_RESPONSE";
     public static final String TOPIC_POSTS_LIKE_FOR_USER = "POSTS_LIKE_FOR_USER";
+    public static final String TOPIC_GET_USER_LIKES_RESPONSE ="TOPIC_GET_USER_LIKES_RESPONSE";
+
+
+
+    public static final String TOPIC_GET_COMMENT_RESPONSE = "TOPIC_GET_COMMENT_RESPONSE";
 
 
     @Bean
@@ -57,6 +62,14 @@ public class KafkaProducerConfig {
     public NewTopic topicPostsLikeForUser() {
         return TopicBuilder
                 .name(TOPIC_POSTS_LIKE_FOR_USER)
+                .partitions(3)
+                .replicas(2)
+                .build();
+    }
+    @Bean
+    public NewTopic topicGetComment() {
+        return TopicBuilder
+                .name(TOPIC_GET_COMMENT_RESPONSE)
                 .partitions(3)
                 .replicas(2)
                 .build();

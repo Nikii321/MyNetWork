@@ -20,8 +20,8 @@ import java.util.Locale;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class Post {
+@EqualsAndHashCode(callSuper = false)
+public class Post extends Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @org.springframework.data.annotation.Id
@@ -49,21 +49,22 @@ public class Post {
         this.authorId = authorId;
         this.date =  Instant.ofEpochMilli(System.currentTimeMillis());
     }
-    public String PostToString(){
+    public String customToString(){
 
         String result = "";
-        result += "id="+id+",";
-        result+= "AuthorName="+authorName+",";
-        result+="text="+text+",";
-        result += "AuthorId="+authorId+",";
-        result+="path="+path+",";
-        result+="date="+date+",";
-        result+= "countLike="+countLike;
+        result += "id:="+id+",";
+        result+= "AuthorName:="+authorName+",";
+        result+="text:="+text+",";
+        result += "AuthorId:="+authorId+",";
+        result+="path:="+path+",";
+        result+="date:="+date+",";
+        result+= "countLike:="+countLike;
+
         System.out.println(result);
 
         return result;
     }
-    public void takeData(String massage){
+    public void convertData(String massage){
         String[] str=massage.split(",");
 
 
@@ -71,7 +72,7 @@ public class Post {
 
 
 
-            String[] strings = tmp.split("=");
+            String[] strings = tmp.split(":=");
             switch (strings[0]){
                 case "id":
                     this.id = (strings[1].equals("null"))?null:Long.parseLong(strings[1]);

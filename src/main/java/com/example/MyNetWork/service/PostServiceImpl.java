@@ -2,12 +2,14 @@ package com.example.MyNetWork.service;
 
 import com.example.MyNetWork.entity.PostsAndLike;
 import com.example.MyNetWork.entity.User;
+import com.example.postapi.model.Comment;
 import com.example.postapi.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -21,20 +23,27 @@ public class PostServiceImpl implements PostService {
     @Autowired
     ImageService imageService;
 
-    private  HashMap<Long, List<Post>> listHashMap= new HashMap<>();
-    private  HashMap<Long, List<Post>> usersPostsHashMap= new HashMap<>();
-    private  HashMap<Long, List<Long>> likeHashMap= new HashMap<>();
+    private final ConcurrentHashMap<Long, List<Post>> newsHashMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, List<Post>> authorsPostsHashMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, List<Long>> likeHashMap= new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, List<Comment>> commentHashMap= new ConcurrentHashMap<>();
+
 
 
     //<------------------------------------- Add in HashMap (Start) ------------------------------------->
     @Override
+    public void addCommentHashMap( Long id, List<Comment> list) {
+
+        commentHashMap.put(id,list);
+    }
+    @Override
     public void addListHashMap( Long id, List<Post> list) {
 
-        listHashMap.put(id,list);
+        newsHashMap.put(id,list);
     }
     @Override
     public void addUsersPostsHashMap( Long id, List<Post> list) {
-        usersPostsHashMap.put(id,list);
+        authorsPostsHashMap.put(id,list);
     }
 
     public void addLikePosts(Long id, List<Long> list){
@@ -46,7 +55,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void  sendNewPost(Post post){
-        usersPostsHashMap.put(post.getAuthorId(),null);
+        authorsPostsHashMap.put(post.getAuthorId(),null);
         kafkaMessageSender.send(post);
     }
 
@@ -82,9 +91,9 @@ public class PostServiceImpl implements PostService {
     }
 
     private List<Post> getNews(Long id)  {
-        return getPosts(listHashMap,id);
+        return getPosts(newsHashMap,id);
     }
-    private List<Post> getPosts(HashMap<Long,List<Post>> hashMap,Long id){
+    private List<Post> getPosts(ConcurrentHashMap<Long,List<Post>> hashMap,Long id){
         List<Post> posts = hashMap.get(id);
         var data = System.currentTimeMillis();
         while (posts == null){
@@ -120,10 +129,10 @@ public class PostServiceImpl implements PostService {
     public void addOrRemoveLike(Long postId,Long userId,String action,Long authorId){
         List<Post> posts;
         if(authorId==null) {
-            posts = listHashMap.get(userId);
+            posts = newsHashMap.get(userId);
         }
         else {
-            posts = usersPostsHashMap.get(userId);
+            posts = authorsPostsHashMap.get(userId);
         }
 
         List<Long> like = likeHashMap.get(userId);
@@ -167,20 +176,20 @@ public class PostServiceImpl implements PostService {
 
     private List<Post> getAuthorPost(Long id){
 
-        return getPosts(usersPostsHashMap,id);
+        return getPosts(authorsPostsHashMap,id);
     }
 
     public List<Post> delete(Long id, Long postId){
         kafkaMessageSender.sendDeletePostRequest(postId);
-        List<Post> posts = usersPostsHashMap.get(id);
+        List<Post> posts = authorsPostsHashMap.get(id);
         imageService.delete(posts, postId);
 
-        usersPostsHashMap.put(id, deletePostById(posts,postId));
+        authorsPostsHashMap.put(id, deletePostById(posts,postId));
 
-        return usersPostsHashMap.get(id);
+        return authorsPostsHashMap.get(id);
     }
     private Post getPostById(List<Post> posts,Long postId){
-        return  posts.parallelStream().filter(s->s.getId()==postId).collect(Collectors.toList()).get(0);
+        return  posts.parallelStream().filter(s->s.getId() == postId).findFirst().get();
     }
     private List<Post> deletePostById(List<Post> posts,Long postId){
         posts.remove(getPostById(posts,postId));

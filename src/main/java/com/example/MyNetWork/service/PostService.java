@@ -1,6 +1,7 @@
 package com.example.MyNetWork.service;
 
 import com.example.MyNetWork.entity.PostsAndLike;
+import com.example.postapi.model.Comment;
 import com.example.postapi.model.Post;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface PostService {
     public PostsAndLike getNewsWithLike();
     public void addOrRemoveLike(Long postId,Long userId,String action,Long authorId);
     public PostsAndLike getMyPostWithLike(Long id);
-
+    public void addCommentHashMap( Long id, List<Comment> list);
 }

@@ -1,5 +1,6 @@
 package com.example.postapi.service;
 
+import com.example.postapi.model.Model;
 import com.example.postapi.model.Post;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.example.postapi.config.KafkaProducerConfig.TOPIC_ADD_POST_RESPONSE;
-import static com.example.postapi.config.KafkaProducerConfig.TOPIC_RESPONSE_NEWS;
 import static com.example.postapi.config.KafkaProducerConfig.TOPIC_DELETE_POST_RESPONSE;
 import static com.example.postapi.config.KafkaProducerConfig.TOPIC_UPDATE_POST_RESPONSE;
 
@@ -31,7 +31,7 @@ public class KafkaMessageSender implements MessageSender {
     @Override
     public void send(Post message) {
         log.info("send message:{}", message);
-        String messageAsString = message.PostToString();
+        String messageAsString = message.customToString();
         try {
             messageAsString = objectMapper.writeValueAsString(messageAsString);
         } catch (JsonProcessingException ex) {
@@ -41,13 +41,12 @@ public class KafkaMessageSender implements MessageSender {
         kafkaTemplate.send(TOPIC_ADD_POST_RESPONSE, messageAsString);
     }
     @Override
-    public void send(List<Post> message, Long id, String TOPIC_SOMETHING_RESPONSE) {
+    public void send(List<? extends Model> message, Long id, String TOPIC_SOMETHING_RESPONSE) {
         log.info("send message:{}", message);
         String messageAsString =id+" ; ";
-        String messageAsStringForLike =id+" ; ";
         for(int i=0;i<message.size();i++){
 
-            messageAsString += message.get(i).PostToString();
+            messageAsString += message.get(i).customToString();
             if(i!= message.size()-1){
                 messageAsString+=" ; ";
             }
@@ -64,9 +63,7 @@ public class KafkaMessageSender implements MessageSender {
 
     public void sendForLike(List<Long> message, Long id, String TOPIC_SOMETHING_RESPONSE) {
         log.info("send message:{}", message);
-        System.out.println(message);
         String messageAsString =id+" ; ";
-        String messageAsStringForLike =id+" ; ";
         for(int i=0;i<message.size();i++){
 
             messageAsString += message.get(i);
@@ -98,7 +95,7 @@ public class KafkaMessageSender implements MessageSender {
     @Override
     public void sendUpdate(Post post) {
         log.info("send message:{}", post);
-        var messageAsString = post.PostToString();
+        var messageAsString = post.customToString();
         try {
             messageAsString = objectMapper.writeValueAsString(messageAsString);
         } catch (JsonProcessingException ex) {

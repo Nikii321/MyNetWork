@@ -25,7 +25,7 @@ public class PageController {
 
 
     @GetMapping("/page/{username}")
-    public String showPage(@PathVariable("username") String username, Model model) throws InterruptedException {
+    public String showPage(@PathVariable("username") String username, Model model){
         kafkaMessageSender.send(userService.findUserByUsername(username).getId());
         User user= userService.findUserByUsername(username);
 
@@ -41,7 +41,14 @@ public class PageController {
     @PostMapping("/page/{username}")
     public String subscribe(@PathVariable("username") String username, Model model){
         userService.subscriptionOrUnsubscription(userService.getCurrentUsername(),username);
+        kafkaMessageSender.send(userService.findUserByUsername(username).getId());
+        User user= userService.findUserByUsername(username);
+        Details details= detailsService.getDetails(user.getId());
         model.addAttribute("SubscribeButton", userService.isSubscribe(userService.getCurrentUsername(),username));
+        model.addAttribute("UserDetails", details);
+        model.addAttribute("SubscribersCount", user.getSubscribers().size());
+        model.addAttribute("SubscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("I", userService.getCurrentUsername());
 
         return "PageUser";
     }

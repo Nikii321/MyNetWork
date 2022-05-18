@@ -15,4 +15,6 @@ public interface PostService {
     public Flux<Post> showUserNews(Flux<Long> authorId);
     public Mono<Post> incrementPlus(Long postId);
     public Mono<Post> incrementMinus(Long postId);
+    public Flux<Post> getPopularPosts(Long id);
+
 }

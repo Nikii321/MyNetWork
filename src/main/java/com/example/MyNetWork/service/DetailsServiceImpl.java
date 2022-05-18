@@ -27,7 +27,7 @@ public class DetailsServiceImpl implements DetailsService{
         detailsHashMap.put(id,details);
     }
 
-    public Details getDetails(Long id) throws InterruptedException {
+    public Details getDetails(Long id) {
 
         Details newDetails =detailsHashMap.get(id);
 

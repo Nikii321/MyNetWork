@@ -3,6 +3,7 @@ package com.example.MyNetWork.config;
 import com.example.MyNetWork.service.DetailsService;
 import com.example.MyNetWork.service.PostService;
 import com.example.detailsapi.model.Details;
+import com.example.postapi.model.Comment;
 import com.example.postapi.model.Post;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class KafkaConsumerConfig {
     public static final String TOPIC_UPDATE_POST_RESPONSE = "UPDATE_SHOW_RESPONSE";
     public static final String TOPIC_GET_AUTHOR_POST_RESPONSE = "POST_GET_AUTHOR_RESPONSE";
     public static final String TOPIC_GET_USER_LIKES_RESPONSE ="TOPIC_GET_USER_LIKES_RESPONSE";
+    public static final String TOPIC_GET_COMMENT_RESPONSE = "TOPIC_GET_COMMENT_RESPONSE";
+
 
 
 
@@ -51,7 +54,7 @@ public class KafkaConsumerConfig {
     public void  AddPostResponseListener(String msgAsString) {
         Post message = new Post();
         try {
-            message.takeData(objectMapper.readValue(msgAsString,String.class));
+            message.convertData(objectMapper.readValue(msgAsString,String.class));
 
         } catch (Exception ex) {
             log.error("can't parse message:{}", msgAsString, ex);
@@ -71,7 +74,6 @@ public class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
 
-
         List<Post> list = new ArrayList<>();
         Long id =0L;
         for (String tmp :data){
@@ -81,7 +83,7 @@ public class KafkaConsumerConfig {
             }
 
             Post post = new Post();
-            post.takeData(tmp);
+            post.convertData(tmp);
             list.add(post);
 
         }
@@ -118,7 +120,7 @@ public class KafkaConsumerConfig {
     public void  PostUpdateResponseListener(String msgAsString) {
         Post message = new Post();
         try {
-            message.takeData(objectMapper.readValue(msgAsString,String.class));
+            message.convertData(objectMapper.readValue(msgAsString,String.class));
 
         } catch (Exception ex) {
             log.error("can't parse message:{}", msgAsString, ex);
@@ -157,12 +159,11 @@ public class KafkaConsumerConfig {
                 continue;
             }
             Post post = new Post();
-            post.takeData(tmp);
+            post.convertData(tmp);
             list.add(post);
         }
 
         postService.addUsersPostsHashMap(id,list);
-
     }
 
 
@@ -178,18 +179,45 @@ public class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
 
-        System.out.println(1);
-        System.out.println(Arrays.toString(data));
         List<Long> list = new ArrayList<>();
         Long id = Long.parseLong(data[0]);
-        System.out.println(2);
         for(int i = 1;i<data.length;i++){
             list.add(Long.parseLong(data[i]));
         }
         postService.addLikePosts(id,list);
-        System.out.println(list);
+
 
     }
+    @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_GET_COMMENT_RESPONSE)
+    public void GetCommentListener(String msgAsString) {
+        String[] data;
+        try {
+            data = objectMapper.readValue(msgAsString, String.class).split(" ; ");
+
+
+        } catch (Exception ex) {
+            log.error("can't parse message:{}", msgAsString, ex);
+            throw new RuntimeException("can't parse message:" + msgAsString, ex);
+        }
+
+        List<Comment> list = new ArrayList<>();
+        Long id = 0L;
+        for (String tmp : data) {
+            if (!tmp.contains("text")) {
+                id = Long.parseLong(tmp);
+                continue;
+            }
+
+            Comment Comment = new Comment();
+            Comment.convertData(tmp);
+            list.add(Comment);
+
+
+            postService.addCommentHashMap(id, list);
+
+        }
+    }
+
 
 
 
