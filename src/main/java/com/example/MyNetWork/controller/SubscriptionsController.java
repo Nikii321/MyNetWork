@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 public class SubscriptionsController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/subscriptions/{username}")
     public String showSubscription(@PathVariable String username, Model model){

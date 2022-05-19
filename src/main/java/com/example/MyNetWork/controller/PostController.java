@@ -2,11 +2,7 @@ package com.example.MyNetWork.controller;
 
 import com.example.MyNetWork.entity.PostsAndLike;
 import com.example.MyNetWork.entity.User;
-import com.example.MyNetWork.service.ImageService;
-import com.example.MyNetWork.service.KafkaMessageSender;
-import com.example.MyNetWork.service.PostService;
-import com.example.MyNetWork.service.UserService;
-import com.example.detailsapi.model.Details;
+import com.example.MyNetWork.service.*;
 import com.example.postapi.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,22 +10,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Objects;
+import java.math.BigInteger;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 @Controller
 public class PostController {
     @Autowired
-    KafkaMessageSender messageSender;
+    private KafkaMessageSender messageSender;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    PostService postService;
+    private GlobalService postService;
     @Autowired
-    ImageService imageService;
+    private ImageService imageService;
+
+
 
     @GetMapping("/post")
     public String showPost( Model model) {
@@ -82,7 +77,7 @@ public class PostController {
                         @RequestParam(required = true, defaultValue = "") String id)
             throws ExecutionException, InterruptedException {
         Long userId = userService.getCurrentUser().getId();
-        Long post_id = Long.parseLong(id);
+        BigInteger post_id = BigInteger.valueOf(Long.parseLong(id));
 
         postService.addOrRemoveLike(post_id,userId,action, null);
         PostsAndLike  postsAndLike= postService.getNewsWithLike();
@@ -125,11 +120,11 @@ public class PostController {
         model.addAttribute("I",userService.getCurrentUser().getUsername());
         model.addAttribute("Username",username);
         if(action.equals("remove")){
-            postService.delete(authorId,Long.parseLong(id));
+            postService.delete(authorId, BigInteger.valueOf(Long.parseLong(id)));
 
         }
         else{
-            postService.addOrRemoveLike(Long.parseLong(id), userService.getCurrentUser().getId(),action,authorId);
+            postService.addOrRemoveLike(BigInteger.valueOf(Long.parseLong(id)), userService.getCurrentUser().getId(),action,authorId);
         }
         messageSender.sendGetAuthorPosts(authorId);
 

@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -19,13 +20,14 @@ import java.util.Locale;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @ToString
 @EqualsAndHashCode(callSuper = false)
 public class Post extends Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @org.springframework.data.annotation.Id
-    private Long id;
+    private BigInteger id;
 
     private String text;
     private String path;
@@ -75,7 +77,7 @@ public class Post extends Model{
             String[] strings = tmp.split(":=");
             switch (strings[0]){
                 case "id":
-                    this.id = (strings[1].equals("null"))?null:Long.parseLong(strings[1]);
+                    this.id = (strings[1].equals("null"))?null:BigInteger.valueOf(Long.parseLong(strings[1]));
 
                     break;
                 case "AuthorName":

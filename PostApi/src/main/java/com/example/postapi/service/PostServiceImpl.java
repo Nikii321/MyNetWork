@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.util.Comparator;
 
@@ -25,27 +26,26 @@ public class PostServiceImpl implements PostService{
         log.info("Start show");
         return postRepo.findAll();
     }
-    public Mono<Post> incrementPlus(Long postId){
+    public Mono<Post> incrementPlus(BigInteger postId){
         return postRepo.findById(postId).map(s->{
             s.incrementPlus();
             return s;
         }).flatMap(postRepo::save);
 
     }
-    public Mono<Post> incrementMinus(Long postId){
+    public Mono<Post> incrementMinus(BigInteger postId){
         return postRepo.findById(postId).map(s->{
             s.incrementMinus();
             return s;
         }).flatMap(postRepo::save);
 
     }
-    public Mono<Post> showByID(Long id){
+    public Mono<Post> showByID(BigInteger id){
 
 
         return postRepo.findById(id);
     }
     public Flux<Post> showByAuthorId(Long id){
-        Flux<Comment> commentFlux = commentRepo.findAllByPostId(77L);
 
 
         return postRepo.findAllByAuthorId(id);
@@ -58,7 +58,7 @@ public class PostServiceImpl implements PostService{
         });
 
     }
-    public Mono<Post> update(Mono<Post> newPost,Long id){
+    public Mono<Post> update(Mono<Post> newPost,BigInteger id){
 
         delete(id);
 
@@ -68,7 +68,7 @@ public class PostServiceImpl implements PostService{
         });
 
     }
-    public Mono<Void> delete(Long id){
+    public Mono<Void> delete(BigInteger id){
         Mono<Void> mono =  postRepo.findById(id).flatMap(this.postRepo::delete);
         return mono;
     }

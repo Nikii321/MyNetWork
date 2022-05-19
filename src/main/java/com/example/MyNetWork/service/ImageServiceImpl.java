@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -41,9 +42,9 @@ public class ImageServiceImpl implements ImageService {
         File file = new File(realPath);
         file.delete();
     }
-    public void delete(List<Post> posts,Long postId){
+    public void delete(List<Post> posts, BigInteger postId){
         delete(posts.parallelStream().
-                filter(s->s.getId()==(postId)).
+                filter(s->s.getId().equals(postId)).
                 collect(Collectors.toList()).get(0).getPath());
         posts.remove(postId);
 

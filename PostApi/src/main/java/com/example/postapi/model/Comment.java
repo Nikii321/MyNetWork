@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.math.BigInteger;
 import java.time.Instant;
 
 @Table("comment_post")
@@ -20,11 +21,11 @@ public class Comment extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @org.springframework.data.annotation.Id
-    private Long id;
+    private BigInteger id;
     @Column(name =  "user_id")
     private Long userId;
     @Column(name =  "post_id")
-    private Long postId;
+    private BigInteger postId;
     @Column(name = "comment_text")
     private String text;
 
@@ -50,14 +51,14 @@ public class Comment extends Model {
             String[] strings = tmp.split(":=");
             switch (strings[0]){
                 case "id":
-                    this.id = (strings[1].equals("null"))?null:Long.parseLong(strings[1]);
+                    this.id = (strings[1].equals("null"))?null:BigInteger.valueOf(Long.parseLong(strings[1]));
 
                     break;
                 case "UserId":
                     this.userId = Long.parseLong(strings[1]);
                     break;
                 case "PostId":
-                    this.postId = Long.parseLong(strings[1]);
+                    this.postId = BigInteger.valueOf(Long.parseLong(strings[1]));
                     break;
 
                 case "text":

@@ -20,17 +20,17 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepo userRepository;
+    private UserRepo userRepository;
     @Autowired
-    RoleRepo roleRepository;
+    private RoleRepo roleRepository;
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private EmailService emailService;
     @Autowired
-    DetailsService detailsService;
+    private DetailsService detailsService;
     @Autowired
-    ImageService imageService;
+    private ImageService imageService;
 
 
 

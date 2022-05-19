@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 import java.util.List;
 @Data
 @AllArgsConstructor
@@ -15,5 +16,5 @@ import java.util.List;
 @ToString
 public class PostsAndLike {
     private List<Post> posts;
-    private List<Long> likes;
+    private List<BigInteger> likes;
 }

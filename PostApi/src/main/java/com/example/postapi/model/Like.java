@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.relational.core.mapping.Table;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 
 @Table("like")
 @Data
@@ -20,5 +21,5 @@ public class Like {
     @Column(name =  "user_id")
     private Long idUser;
     @Column(name =  "post_id")
-    private Long PostId;
+    private BigInteger PostId;
 }

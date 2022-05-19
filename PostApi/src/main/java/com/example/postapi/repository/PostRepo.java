@@ -7,11 +7,12 @@ import org.springframework.scheduling.annotation.Async;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface PostRepo extends ReactiveCrudRepository<Post,Long> {
+import java.math.BigInteger;
+
+public interface PostRepo extends ReactiveCrudRepository<Post,BigInteger> {
     @Async
     public Flux<Post> findAllByAuthorId(Long id);
-    @Async
-    public Mono<Post> findById(Long id);
+
 
 
 

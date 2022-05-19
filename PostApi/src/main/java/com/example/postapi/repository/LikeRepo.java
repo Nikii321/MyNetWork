@@ -8,14 +8,16 @@ import org.springframework.scheduling.annotation.Async;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigInteger;
+
 public interface LikeRepo extends ReactiveCrudRepository<Like,Long> {
 
     @Async
     @Query("SELECT * FROM public.like where post_id = :postId and  user_id = :userId;")
-    Mono<Like> findByPostIdAndIdUser(Long postId,Long userId);
+    Mono<Like> findByPostIdAndIdUser(BigInteger postId, Long userId);
     @Async
     @Query("SELECT user_id FROM public.like where post_id = :postId;")
-    Flux<Long> findAllByPostId(Long postId);
+    Flux<Long> findAllByPostId(BigInteger postId);
     @Async
     @Query("SELECT post_id FROM public.like where user_id = :userId;")
     Flux<Long> findAllByIdUser(Long userId);
@@ -24,10 +26,10 @@ public interface LikeRepo extends ReactiveCrudRepository<Like,Long> {
     Flux<Like> findAll();
     @Async
     @Query("INSERT INTO public.like(user_id, post_id) VALUES (:userId, :postId);")
-    Mono<Like> save(Long postId,Long userId);
+    Mono<Like> save(BigInteger postId,Long userId);
     @Async
     @Query("DELETE FROM public.like WHERE post_id = :postId and user_id = :userId;")
-    Mono<Void> deleteByPostIdAndAndIdUser(Long postId,Long userId);
+    Mono<Void> deleteByPostIdAndAndIdUser(BigInteger postId,Long userId);
 
 
 

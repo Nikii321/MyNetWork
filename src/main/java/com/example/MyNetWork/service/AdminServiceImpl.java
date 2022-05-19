@@ -16,9 +16,9 @@ import java.util.Set;
 public class AdminServiceImpl implements AdminService{
 
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    UserRepo userRepository;
+    private UserRepo userRepository;
     @PersistenceContext
     private EntityManager em;
 

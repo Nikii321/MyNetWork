@@ -11,10 +11,10 @@ import java.util.HashMap;
 public class DetailsServiceImpl implements DetailsService{
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    MessageSender kafkaMessageSender;
+    private MessageSender kafkaMessageSender;
 
     private  HashMap<Long, Details> detailsHashMap= new HashMap<>();
 

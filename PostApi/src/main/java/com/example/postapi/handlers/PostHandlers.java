@@ -17,6 +17,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigInteger;
+
 @Slf4j
 @Component("postHandlers")
 public class PostHandlers {
@@ -46,7 +48,7 @@ public class PostHandlers {
     }
 
     public Mono<ServerResponse> showByID(ServerRequest request) {
-        Long id = request.queryParam("id").map(Long::valueOf).orElse(null);
+        BigInteger id = request.queryParam("id").map(Long::valueOf).map(BigInteger::valueOf).orElse(null);
         if(id == null)return ServerResponse.
                 badRequest()
                 .varyBy("Not correct id").build();
@@ -82,7 +84,7 @@ public class PostHandlers {
                 badRequest()
                 .varyBy("Not correct id").build();
 
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(postService.delete(id),Void.class);
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(postService.delete(BigInteger.valueOf(id)),Void.class);
     }
     public Mono<ServerResponse> showUserNews(ServerRequest serverRequest){
         log.info("nice");

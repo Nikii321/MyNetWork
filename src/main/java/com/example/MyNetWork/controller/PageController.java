@@ -17,11 +17,11 @@ import java.util.List;
 @Controller
 public class PageController {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    DetailsService detailsService;
+    private DetailsService detailsService;
     @Autowired
-    MessageSender kafkaMessageSender;
+    private MessageSender kafkaMessageSender;
 
 
     @GetMapping("/page/{username}")

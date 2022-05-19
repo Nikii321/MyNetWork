@@ -12,9 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class ImageController {
     @Autowired
-    ImageService imageService;
+    private ImageService imageService;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/fileUpload")
     public String showUploaderImage(){

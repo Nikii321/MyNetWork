@@ -11,6 +11,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigInteger;
 import java.util.Set;
 
 import static com.example.MyNetWork.config.KafkaProducerConfig.*;
@@ -76,7 +77,7 @@ public class KafkaMessageSender implements MessageSender {
         kafkaTemplate.send(TOPIC_REQUESTS_DETAILS, messageAsString);
     }
     @Override
-    public void sendDeletePostRequest(Long id) {
+    public void sendDeletePostRequest(BigInteger id) {
         log.info("send post id for delete:{} ", id);
         String messageAsString = String.valueOf(id);
         try {
@@ -101,7 +102,7 @@ public class KafkaMessageSender implements MessageSender {
         }
         kafkaTemplate.send(TOPIC_REQUESTS_GET_AUTHOR_POST, message);
     }
-    public void  sendAddOrDeleteLike(Long postId, Long userId, String action){
+    public void  sendAddOrDeleteLike(BigInteger postId, Long userId, String action){
         String message = userId+ " ; " + postId+" ; "+action;
         log.info("{} from {} to {}",action,userId, postId);
         try {

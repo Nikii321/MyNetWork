@@ -17,6 +17,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,7 +67,6 @@ class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
 
-
         Mono<Post> mono = postService.save(Mono.just(message));
         mono.subscribe(kafkaMessageSender::send);
     }
@@ -92,29 +92,16 @@ class KafkaConsumerConfig {
         Flux<Post> response = postService.showUserNews(Mono.just(list).flatMapMany(Flux::fromIterable).skip(1)).switchIfEmpty(postService.getPopularPosts(id));
         Flux<Long> responseForLike = likeService.findAllByUserId(id);
 
-        Long finalId = id;
 
 
-
-        response.collectList().subscribe(s->{
-            kafkaMessageSender.send(s, finalId, TOPIC_RESPONSE_NEWS);
-        });
-        Flux<Comment> responseForComment = response.map(Post::getId).collectList().flatMapMany(s->commentService.findAllByManyPosts(s));
-        responseForComment.collectList().subscribe(s->{
-            kafkaMessageSender.send(s, finalId, TOPIC_GET_COMMENT_RESPONSE);
-        });
-        responseForLike.collectList().subscribe(s->{
-            kafkaMessageSender.sendForLike(s,finalId, TOPIC_GET_USER_LIKES_RESPONSE);
-        });
-
+        sendPostKafka(response,  responseForLike,  id,  TOPIC_RESPONSE_NEWS);
 
     }
-
     @KafkaListener(groupId = GROUP_ID, topics = TOPIC_REQUESTS_POST_DELETE_REQUESTS)
     public void  DeletePost(String msgAsString) {
-        Long id = 0L;
+        BigInteger id;
         try {
-            id = Long.parseLong(objectMapper.readValue(msgAsString,String.class));
+            id = BigInteger.valueOf(Long.parseLong(objectMapper.readValue(msgAsString,String.class)));
 
 
         } catch (Exception ex) {
@@ -146,7 +133,7 @@ class KafkaConsumerConfig {
     public void  getAuthorPosts(String msgAsString) {
 
         msgAsString = msgAsString.replace(" ","");
-        Long id = 0L;
+        long id = 0L;
         try {
             id = Long.parseLong(objectMapper.readValue(msgAsString,String.class));
 
@@ -156,19 +143,21 @@ class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
         Flux<Post> response = postService.showByAuthorId(id).sort(Comparator.comparing(Post::getDate).reversed());
-        Long finalId = id;
         Flux<Long> responseForLike = likeService.findAllByUserId(id);
 
+        sendPostKafka(response,  responseForLike,  id,  TOPIC_GET_AUTHOR_POST_RESPONSE);
 
+    }
 
+    private void sendPostKafka(Flux<Post> response, Flux<Long> responseForLike, Long id, String TOPIC){
         response.collectList().subscribe(s->{
-            kafkaMessageSender.send(s,finalId, TOPIC_GET_AUTHOR_POST_RESPONSE);
+            kafkaMessageSender.send(s,id, TOPIC);
         });
         Flux<Comment> responseForComment = response.map(Post::getId).collectList().flatMapMany(s->commentService.findAllByManyPosts(s));
         responseForComment.collectList().subscribe(s->{
-            kafkaMessageSender.send(s, finalId, TOPIC_GET_COMMENT_RESPONSE);
+            kafkaMessageSender.send(s, id, TOPIC_GET_COMMENT_RESPONSE);
         });        responseForLike.collectList().subscribe(s->{
-            kafkaMessageSender.sendForLike(s,finalId, TOPIC_GET_USER_LIKES_RESPONSE);
+            kafkaMessageSender.sendForLike(s,id, TOPIC_GET_USER_LIKES_RESPONSE);
         });
     }
 
@@ -184,7 +173,7 @@ class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
         var userId =Long.parseLong(tmp[0]);
-        var postId =Long.parseLong(tmp[1]);
+        var postId = BigInteger.valueOf(Long.parseLong(tmp[1]));
         var action =(tmp[2]);
         if(action.equals("add")){
             Mono<Like> mono = likeService.saveLike(postId,userId);

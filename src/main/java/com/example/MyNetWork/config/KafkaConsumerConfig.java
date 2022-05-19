@@ -1,7 +1,9 @@
 package com.example.MyNetWork.config;
 
 import com.example.MyNetWork.service.DetailsService;
-import com.example.MyNetWork.service.PostService;
+import com.example.MyNetWork.service.LikeServiceMongo;
+import com.example.MyNetWork.service.GlobalService;
+import com.example.MyNetWork.service.PostServiceMongo;
 import com.example.detailsapi.model.Details;
 import com.example.postapi.model.Comment;
 import com.example.postapi.model.Post;
@@ -13,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -45,9 +47,10 @@ public class KafkaConsumerConfig {
 
 
     @Autowired
-    PostService postService;
+    private GlobalService postService;
     @Autowired
-    DetailsService detailsService;
+    private DetailsService detailsService;
+
 
 
     @KafkaListener(groupId = GROUP_ID_POST, topics = TOPIC_RATE_REQUESTS)
@@ -88,7 +91,7 @@ public class KafkaConsumerConfig {
 
         }
 
-        postService.addListHashMap(id,list);
+        postService.saveNews(id,list);
 
     }
     @KafkaListener(groupId = GROUP_ID_DETAILS, topics = TOPIC_RATE_REQUESTS_DETAILS_ADD)
@@ -163,7 +166,7 @@ public class KafkaConsumerConfig {
             list.add(post);
         }
 
-        postService.addUsersPostsHashMap(id,list);
+        postService.savePost(id,list);
     }
 
 
@@ -179,12 +182,12 @@ public class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
 
-        List<Long> list = new ArrayList<>();
+        List<BigInteger> list = new ArrayList<>();
         Long id = Long.parseLong(data[0]);
         for(int i = 1;i<data.length;i++){
-            list.add(Long.parseLong(data[i]));
+            list.add(BigInteger.valueOf(Long.parseLong(data[i])));
         }
-        postService.addLikePosts(id,list);
+        postService.saveLike(id,list);
 
 
     }
@@ -213,7 +216,7 @@ public class KafkaConsumerConfig {
             list.add(Comment);
 
 
-            postService.addCommentHashMap(id, list);
+            postService.saveComments(list);
 
         }
     }
