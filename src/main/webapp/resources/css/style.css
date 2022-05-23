@@ -82,6 +82,18 @@ table, th, td {
     display: block;
     font-size: 15px;
 }
+.brd_comment {
+    width: 90%;
+    border: 3px;
+    background: #f1f1f1;
+    color: #2196F3;
+    border-radius: 10%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-size: 10px;
+}
 
 .titl {
     font-size: 20px;

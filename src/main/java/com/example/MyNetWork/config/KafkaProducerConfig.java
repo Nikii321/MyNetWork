@@ -25,6 +25,10 @@ public class KafkaProducerConfig {
     public static final String TOPIC_REQUESTS_POST_DELETE = "POST_DELETE_REQUESTS";
     public static final String TOPIC_REQUESTS_POST_UPDATE = "POST_UPDATE_REQUESTS";
     public static final String TOPIC_REQUESTS_GET_AUTHOR_POST = "POST_GET_AUTHOR_REQUESTS";
+    public static final String TOPIC_ADD_COMMENT_REQUESTS = "TOPIC_ADD_COMMENT_REQUESTS";
+    public static final String TOPIC_DELETE_COMMENT_REQUESTS = "TOPIC_DELETE_COMMENT_REQUESTS";
+
+
 
 
 

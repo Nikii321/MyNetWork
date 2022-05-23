@@ -62,8 +62,11 @@ public class PostController {
         PostsAndLike  postsAndLike= postService.getNewsWithLike();
         var posts = postsAndLike.getPosts();
         var like = postsAndLike.getLikes();
+        var comment = postsAndLike.getComments();
         model.addAttribute("NewPost",posts);
         model.addAttribute("Like",like);
+        model.addAttribute("Comment",comment);
+        model.addAttribute("I",userService.getCurrentUser());
 
 
 
@@ -74,23 +77,39 @@ public class PostController {
     @PostMapping("/news")
     public String like( Model model,
                         @RequestParam(required = true, defaultValue = "") String action,
-                        @RequestParam(required = true, defaultValue = "") String id)
+                        @RequestParam(required = true, defaultValue = "") String id,
+                        @RequestParam(required = true, defaultValue = "") String text)
             throws ExecutionException, InterruptedException {
-        Long userId = userService.getCurrentUser().getId();
-        BigInteger post_id = BigInteger.valueOf(Long.parseLong(id));
+            addOrDelete(action,id,text,null);
 
-        postService.addOrRemoveLike(post_id,userId,action, null);
+
+
         PostsAndLike  postsAndLike= postService.getNewsWithLike();
         var posts = postsAndLike.getPosts();
         var like = postsAndLike.getLikes();
-
-
+        var comment = postsAndLike.getComments();
         model.addAttribute("NewPost",posts);
         model.addAttribute("Like",like);
+        model.addAttribute("Comment",comment);
+        model.addAttribute("I",userService.getCurrentUser());
 
 
         return "news";
     }
+    public void addOrDelete(String action,String id, String text, Long authorId){
+        Long userId = userService.getCurrentUser().getId();
+        if(action.equals("addComment")){
+            postService.saveComment(text,new BigInteger(id));
+        }
+        else if(action.equals("removeComment")){
+            postService.deleteComment(new BigInteger(id));
+        }
+        else {
+            BigInteger post_id = new BigInteger(id);
+            postService.addOrRemoveLike(post_id,userId,action, authorId);
+        }
+    }
+
 
 
     @GetMapping("/post/{username}")
@@ -102,38 +121,41 @@ public class PostController {
         var like = postsAndLike.getLikes();
         model.addAttribute("NewPost",posts);
         model.addAttribute("Like",like);
-        model.addAttribute("I",userService.getCurrentUser().getUsername());
+        model.addAttribute("I",userService.getCurrentUser());
         model.addAttribute("Username",username);
 
         return "my_post";
     }
+
+
+
+
     @PostMapping("/post/{username}")
     public String AuthorsPost(@PathVariable("username") String username, Model model,
                               @RequestParam(required = true, defaultValue = "") String action,
-                              @RequestParam(required = true, defaultValue = "") String id
+                              @RequestParam(required = true, defaultValue = "") String id,
+                              @RequestParam(required = true, defaultValue = "") String text
+
     ){
+        model.addAttribute("I",userService.getCurrentUser());
+        model.addAttribute("Username",username);
         Long authorId = userService.findUserByUsername(username).getId();
-        postService.sendKafkaListId();
+        addOrDelete(action,id,text,authorId);
+
         PostsAndLike  postsAndLike= postService.getMyPostWithLike(authorId);
         var posts = postsAndLike.getPosts();
         var like = postsAndLike.getLikes();
-        model.addAttribute("I",userService.getCurrentUser().getUsername());
-        model.addAttribute("Username",username);
-        if(action.equals("remove")){
-            postService.delete(authorId, BigInteger.valueOf(Long.parseLong(id)));
+        var comment = postsAndLike.getComments();
 
-        }
-        else{
-            postService.addOrRemoveLike(BigInteger.valueOf(Long.parseLong(id)), userService.getCurrentUser().getId(),action,authorId);
-        }
-        messageSender.sendGetAuthorPosts(authorId);
+
 
 
 
 
         model.addAttribute("NewPost",posts);
         model.addAttribute("Like",like);
-        System.out.println(like);
+        model.addAttribute("Comment",comment);
+        model.addAttribute("I",userService.getCurrentUser());
 
         return "my_post";
     }

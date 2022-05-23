@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.*;
 
+import static com.example.MyNetWork.config.KafkaProducerConfig.*;
+
 @Service
 public class GlobalServiceImpl implements GlobalService {
 
@@ -34,7 +36,8 @@ public class GlobalServiceImpl implements GlobalService {
         kafkaMessageSender.send(idList, user.getId());
     }
     public void sendNewPost(Post post){
-        kafkaMessageSender.send(post);
+        postServiceMongo.saveOnePost(userService.getCurrentUser().getId());
+        kafkaMessageSender.send(post,TOPIC_REQUESTS);
     }
     //<------------------------------------------------KAFKA------------------------------------------------>
 
@@ -42,7 +45,7 @@ public class GlobalServiceImpl implements GlobalService {
 
     //<------------------------------------------------SAVE------------------------------------------------->
     public void savePost( Long id, List<Post> list){
-        postServiceMongo.savePost(id,list);
+        postServiceMongo.savePosts(id,list);
     }
     public void  saveNews(Long id,List<Post> post){
         postServiceMongo.saveNews(id,post);
@@ -61,11 +64,18 @@ public class GlobalServiceImpl implements GlobalService {
     @SneakyThrows
     public PostsAndLike getNewsWithLike(){
         Long id = userService.getCurrentUser().getId();
-        return new PostsAndLike(postServiceMongo.getNewsMongo(id).get(),likeServiceMongo.getUserLike().get());
+        var posts= postServiceMongo.getNewsMongo(id).get();
+        var likes = likeServiceMongo.getUserLike().get();
+        var comment = commentServiceMongo.findFirstsComment(posts);
+        return new PostsAndLike(posts,likes,comment);
     }
     @SneakyThrows
     public PostsAndLike getMyPostWithLike(Long id){
-        return new PostsAndLike(postServiceMongo.getMyPostMongo(id).get(),likeServiceMongo.getUserLike().get());
+        var posts= postServiceMongo.getMyPostMongo(id).get();
+        var likes = likeServiceMongo.getUserLike().get();
+        var comment = commentServiceMongo.findFirstsComment(posts);
+        return new PostsAndLike(posts,likes,comment);
+
     }
     //<------------------------------------------------GET POST AND LIKE------------------------------------------------->
 
@@ -76,7 +86,7 @@ public class GlobalServiceImpl implements GlobalService {
         List<Post> posts = postServiceMongo.getMyPostMongo(id).get();
         imageService.delete(posts, postId);
         var newPost =  deletePostById(posts,postId);
-        postServiceMongo.savePost(id, newPost);
+        postServiceMongo.savePosts(id, newPost);
         return newPost;
     }
     private Post getPostById(List<Post> posts,BigInteger postId){
@@ -89,6 +99,23 @@ public class GlobalServiceImpl implements GlobalService {
 
     public void addOrRemoveLike(BigInteger postId,Long userId,String action,Long authorId){
         likeServiceMongo.addOrRemoveLike(postId,userId,action,authorId);
+    }
+    public void saveComment(String text,BigInteger postId){
+        User user =userService.getCurrentUser();
+        saveComment(Comment.builder()
+                .commentText(text)
+                .postId(postId)
+                .userId(user.getId())
+                .commentAuthor(user.getUsername()).build());
+
+    }
+
+    private void saveComment(Comment comment){
+        commentServiceMongo.saveComment(comment);
+
+    }
+    public void deleteComment(BigInteger id){
+        commentServiceMongo.deleteComment(id);
     }
 
 

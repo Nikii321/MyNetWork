@@ -1,6 +1,8 @@
 package com.example.MyNetWork.service;
 
 import com.example.detailsapi.model.Details;
+import com.example.postapi.model.Comment;
+import com.example.postapi.model.Model;
 import com.example.postapi.model.Post;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +28,7 @@ public class KafkaMessageSender implements MessageSender {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void send(Post message) {
+    public void send(Model message,String REQUEST) {
         log.info("send post for add message:{}", message);
         String messageAsString = message.customToString();
         try {
@@ -35,7 +37,7 @@ public class KafkaMessageSender implements MessageSender {
             log.error("can't serialize message:{}", message, ex);
             throw new RuntimeException();
         }
-        kafkaTemplate.send(TOPIC_REQUESTS, messageAsString);
+        kafkaTemplate.send(REQUEST, messageAsString);
     }
 
 
@@ -114,6 +116,19 @@ public class KafkaMessageSender implements MessageSender {
         }
         kafkaTemplate.send(TOPIC_GET_USER_LIKES_REQUESTS, message);
     }
+    public void sendComment(Comment comment,String SOME_REQUEST){
+        String message = comment.customToString();
+        log.info("convert comment to string {}",message);
+        try {
+            message = objectMapper.writeValueAsString(message);
+        }
+        catch (JsonProcessingException ex){
+            log.error("can't serialize message:{}", message, ex);
+            throw new RuntimeException();
+        }
+        kafkaTemplate.send(SOME_REQUEST,message);
+    }
+
 
 
 

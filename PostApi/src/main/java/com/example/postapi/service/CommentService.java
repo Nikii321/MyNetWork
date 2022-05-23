@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CommentService {
     public Flux<Comment> getComments(BigInteger post);
-    public Mono<Comment> saveComment(BigInteger post_id, Long user_id, String text);
+    public Mono<Comment> saveComment(BigInteger post_id, Long user_id, String text,String comment_author);
     public Mono<Void> deleteComment(BigInteger post_id,Long user_id, String text);
     public Flux<Comment> findAllByManyPosts(List<BigInteger> posts_id);
 }

@@ -22,51 +22,87 @@
 
 </c:if>
 
-<c:forEach items="${NewPost}" var="post">
 
-
-    <div class="brd">
-        <c:if test="${I.equals(username)}">
+<div>
+    <c:forEach items="${NewPost}" var="post">
+        <c:if test="${I.username.equals(username)}">
             <form method="post">
                 <input type="hidden" name="action" value="remove"/>
                 <input type="hidden" name="id" value="${post.id}"/>
                 <button type="submit" style="color: red">Delete</button>
             </form>
+        </c:if>
+
+        <div class="brd">
+            <p><a class=".titl" href="http://localhost:8081/page/${post.authorName}">${post.authorName}</a><h4
+                style="margin-left: 80%">${post.dateFormat()}</h4></p>
+            <c:if test="${post.path!=null}">
+                <div><p><img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img"></p></div>
+            </c:if>
+
+            <p>${post.text}</p>
+            <div style="margin-right: 70%">
+                <form method="post">
+                    <c:if test="${!Like.contains(post.id)}">
+
+                        <p>
+                            <input type="hidden" name="action" value="add"/>
+                            <input type="hidden" name="id" value="${post.id}"/>
+                            <button style="color: #448AFF">Like</button>
+                        </p>
+                    </c:if>
+                    <c:if test="${Like.contains(post.id)}">
+
+                        <p>
+                            <input type="hidden" name="action" value="delete"/>
+                            <input type="hidden" name="id" value="${post.id}"/>
+                            <button style="color: #dddddd">Like</button>
+                        </p>
+                    </c:if>
+                </form>
+
+                <p>${post.countLike}</p>
+            </div>
+            <div class="brd_comment">
+                <p>
+                <form method="post">
 
 
-        </c:if>
-        <p></p>
-        <a class=".titl" href="http://localhost:8081/page/${post.authorName}">${post.authorName}</a>
-        <c:if test="${post.path!=null}">
-            <img src="${contextPath}/resources/image/post/${post.path}.jpg" class="img">
-        </c:if>
-        <p>${post.text}</p>
-        <div style="margin-right: 70%">
-            <form method="post">
-                <c:if test="${!Like.contains(post.id)}">
-                    <input type="hidden" name="action" value="add"/>
+                    <p><input style="border-radius: 6.5px; height: 30px; width: 250px;background-color: seashell;"
+                              name="text"></p>
+
+                    <input type="hidden" name="action" value="addComment"/>
                     <input type="hidden" name="id" value="${post.id}"/>
-                    <p>
-                        <button style="color: #448AFF">Like</button>
-                    </p>
-                </c:if>
-                <c:if test="${Like.contains(post.id)}">
-                    <input type="hidden" name="action" value="delete"/>
-                    <input type="hidden" name="id" value="${post.id}"/>
-                    <p>
-                        <button style="color: #dddddd">Like</button>
-                    </p>
-                </c:if>
-            </form>
-            <p>${post.countLike}</p>
+                    <button type="submit" style="color: #448AFF">Comment</button>
+
+
+                </form>
+                </p>
+                <c:forEach items="${Comment}" var="comment">
+                    <c:if test="${comment.postId.equals(post.id)}">
+                        <div>
+                            <p>
+                                    ${comment.commentAuthor}
+                                <c:if test="${comment.userId ==I.id}">
+                            <form method="post">
+                                <input type="hidden" name="action" value="removeComment"/>
+                                <input type="hidden" name="id" value="${comment.commentId}"/>
+                                <button type="submit" style="color: red;width: 50px;height: 13px;text-align: center; font-size: 10px">Delete</button>
+                            </form>
+                            </c:if>
+                            </p>
+                            <p>${comment.commentText}</p>
+                        </div>
+                    </c:if>
+                </c:forEach>
+            </div>
+
+
         </div>
 
+    </c:forEach>
 
-    </div>
-
-</c:forEach>
-
-<a href="/" style="color: #448AFF">Main</a>
+    <a href="/" style="color: #448AFF">Main</a>
 </div>
 </body>
 </html>

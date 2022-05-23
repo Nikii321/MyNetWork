@@ -1,6 +1,8 @@
 package com.example.postapi.model;
-public abstract class Model {
-    public abstract String customToString();
-    abstract void convertData(String massage);
+
+public interface Model {
+    public String customToString();
+
+    public void convertData(String massage);
 
 }

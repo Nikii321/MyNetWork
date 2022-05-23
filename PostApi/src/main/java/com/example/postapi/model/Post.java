@@ -23,7 +23,7 @@ import java.util.Locale;
 @Builder
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class Post extends Model{
+public class Post implements Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @org.springframework.data.annotation.Id
@@ -62,7 +62,6 @@ public class Post extends Model{
         result+="date:="+date+",";
         result+= "countLike:="+countLike;
 
-        System.out.println(result);
 
         return result;
     }
@@ -77,7 +76,9 @@ public class Post extends Model{
             String[] strings = tmp.split(":=");
             switch (strings[0]){
                 case "id":
+
                     this.id = (strings[1].equals("null"))?null:BigInteger.valueOf(Long.parseLong(strings[1]));
+
 
                     break;
                 case "AuthorName":

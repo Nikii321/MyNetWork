@@ -2,10 +2,12 @@ package com.example.MyNetWork.service;
 
 import com.example.MyNetWork.entity.PostForMongo;
 import com.example.postapi.model.Post;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -22,17 +24,22 @@ public class PostServiceMongoImpl implements PostServiceMongo {
 
 
     //<--------------------------------SAVE-------------------------------->
-
+    @SneakyThrows
     private void save(Long id, List<Post> postsList, String collections) {
-        PostForMongo postForMongo = new PostForMongo(String.valueOf(id), postsList);
-        mongoTemplate.save(postForMongo,collections);
+        var postForMongo = new PostForMongo(String.valueOf(id), postsList);
+        CompletableFuture.supplyAsync(()->mongoTemplate.save(postForMongo,collections)).get();
+
     }
 
+    
 
-    public void savePost(Long id, List<Post> postList) {
+
+    public void saveOnePost(Long id){
+        save(id,findPostInMongo(id,"posts"),"posts");
+    }
+    public void savePosts(Long id, List<Post> postList) {
         save(id, postList, "posts");
     }
-
     public void saveNews(Long id, List<Post> postList) {
         save(id, postList, "news");
     }

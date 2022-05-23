@@ -19,8 +19,9 @@ public interface GlobalService {
 
     public PostsAndLike getMyPostWithLike(Long id);
     public PostsAndLike getNewsWithLike();
-
+    public void saveComment(String text,BigInteger postId);
 
     public List<Post> delete(Long id, BigInteger postId);
     public void addOrRemoveLike(BigInteger postId,Long userId,String action,Long authorId);
+    public void deleteComment(BigInteger id);
 }

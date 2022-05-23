@@ -185,7 +185,7 @@ public class KafkaConsumerConfig {
         List<BigInteger> list = new ArrayList<>();
         Long id = Long.parseLong(data[0]);
         for(int i = 1;i<data.length;i++){
-            list.add(BigInteger.valueOf(Long.parseLong(data[i])));
+            list.add(new BigInteger((data[i])));
         }
         postService.saveLike(id,list);
 
@@ -210,14 +210,10 @@ public class KafkaConsumerConfig {
                 id = Long.parseLong(tmp);
                 continue;
             }
-
             Comment Comment = new Comment();
             Comment.convertData(tmp);
             list.add(Comment);
-
-
             postService.saveComments(list);
-
         }
     }
 

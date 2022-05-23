@@ -3,39 +3,37 @@ package com.example.postapi.model;
 import lombok.*;
 import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigInteger;
-import java.time.Instant;
 
 @Table("comment_post")
 @Data
-@Builder
-@ToString
-@EqualsAndHashCode(callSuper = false )
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends Model {
+@Builder
+@ToString
+@EqualsAndHashCode(callSuper = false)
+public class Comment implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @org.springframework.data.annotation.Id
-    private BigInteger id;
-    @Column(name =  "user_id")
+    private BigInteger commentId;
+
     private Long userId;
-    @Column(name =  "post_id")
     private BigInteger postId;
-    @Column(name = "comment_text")
-    private String text;
+    private String commentText;
+    private String commentAuthor;
 
     public String customToString(){
 
         String result = "";
-        result += "id:="+id+",";
+        result += "id:="+commentId+",";
         result+= "UserId:="+userId+",";
         result += "PostId:="+postId+",";
-        result+= "text:="+text;
+        result+= "AuthorName:="+commentAuthor+",";
+        result+= "text:="+commentText;
         System.out.println(result);
 
         return result;
@@ -51,7 +49,8 @@ public class Comment extends Model {
             String[] strings = tmp.split(":=");
             switch (strings[0]){
                 case "id":
-                    this.id = (strings[1].equals("null"))?null:BigInteger.valueOf(Long.parseLong(strings[1]));
+
+                    this.commentId = null;
 
                     break;
                 case "UserId":
@@ -62,7 +61,12 @@ public class Comment extends Model {
                     break;
 
                 case "text":
-                    this.text = strings[1];
+                    this.commentText = strings[1];
+                    break;
+                case "AuthorName":
+
+                    this.commentAuthor = strings[1];
+
                     break;
             }
         }

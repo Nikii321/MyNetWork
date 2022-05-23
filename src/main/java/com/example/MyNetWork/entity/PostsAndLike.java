@@ -1,5 +1,6 @@
 package com.example.MyNetWork.entity;
 
+import com.example.postapi.model.Comment;
 import com.example.postapi.model.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +18,5 @@ import java.util.List;
 public class PostsAndLike {
     private List<Post> posts;
     private List<BigInteger> likes;
+    private List<Comment> comments;
 }

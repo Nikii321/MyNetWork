@@ -39,6 +39,8 @@ class KafkaConsumerConfig {
     public static final String TOPIC_REQUESTS_GET_AUTHOR_POST_REQUESTS = "POST_GET_AUTHOR_REQUESTS";
     public static final String TOPIC_ADD_OR_DELETE_LIKE_REQUESTS ="ADD_OR_DELETE_LIKE";
     public static final String TOPIC_ADD_COMMENT_REQUESTS = "TOPIC_ADD_COMMENT_REQUESTS";
+    public static final String TOPIC_DELETE_COMMENT_REQUESTS = "TOPIC_DELETE_COMMENT_REQUESTS";
+
 
 
     @Autowired
@@ -66,7 +68,6 @@ class KafkaConsumerConfig {
             log.error("can't parse message:{}", msgAsString, ex);
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
-
         Mono<Post> mono = postService.save(Mono.just(message));
         mono.subscribe(kafkaMessageSender::send);
     }
@@ -101,7 +102,7 @@ class KafkaConsumerConfig {
     public void  DeletePost(String msgAsString) {
         BigInteger id;
         try {
-            id = BigInteger.valueOf(Long.parseLong(objectMapper.readValue(msgAsString,String.class)));
+            id = new BigInteger(objectMapper.readValue(msgAsString,String.class));
 
 
         } catch (Exception ex) {
@@ -154,6 +155,7 @@ class KafkaConsumerConfig {
             kafkaMessageSender.send(s,id, TOPIC);
         });
         Flux<Comment> responseForComment = response.map(Post::getId).collectList().flatMapMany(s->commentService.findAllByManyPosts(s));
+
         responseForComment.collectList().subscribe(s->{
             kafkaMessageSender.send(s, id, TOPIC_GET_COMMENT_RESPONSE);
         });        responseForLike.collectList().subscribe(s->{
@@ -173,7 +175,7 @@ class KafkaConsumerConfig {
             throw new RuntimeException("can't parse message:" + msgAsString, ex);
         }
         var userId =Long.parseLong(tmp[0]);
-        var postId = BigInteger.valueOf(Long.parseLong(tmp[1]));
+        var postId =new  BigInteger((tmp[1]));
         var action =(tmp[2]);
         if(action.equals("add")){
             Mono<Like> mono = likeService.saveLike(postId,userId);
@@ -204,11 +206,11 @@ class KafkaConsumerConfig {
         }
 
 
-        Mono<Comment> mono = commentService.saveComment(message.getPostId(),message.getUserId(),message.getText());
+        Mono<Comment> mono = commentService.saveComment(message.getPostId(),message.getUserId(),message.getCommentText(),message.getCommentAuthor());
         mono.subscribe();
     }
 
-    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_ADD_COMMENT_REQUESTS)
+    @KafkaListener(groupId = GROUP_ID, topics = TOPIC_DELETE_COMMENT_REQUESTS)
     public void deleteCommit(String msgAsString){
         Comment message = new Comment();
         try {
@@ -222,7 +224,7 @@ class KafkaConsumerConfig {
         }
 
 
-        Mono<Void> mono = commentService.deleteComment(message.getPostId(),message.getUserId(),message.getText());
+        Mono<Void> mono = commentService.deleteComment(message.getPostId(),message.getUserId(),message.getCommentText());
         mono.subscribe();
     }
 

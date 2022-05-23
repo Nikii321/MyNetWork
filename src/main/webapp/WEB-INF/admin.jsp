@@ -74,7 +74,6 @@
         </c:forEach>
     </table>
     <a href="/">Main</a>
-
 </div>
 </body>
 </html>
